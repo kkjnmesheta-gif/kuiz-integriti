@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuiz Tatakelola &amp; Integriti — KKJ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1e3a5f;
+    --navy-dark: #132843;
+    --navy-mid: #2d5282;
+    --navy-light: #3b6ab0;
+    --gold: #d97706;
+    --gold-light: #fbbf24;
+    --gold-pale: #fef3c7;
+    --bg: #f0f4ff;
+    --bg2: #e8edf7;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --success: #065f46;
+    --success-bg: #d1fae5;
+    --success-border: #6ee7b7;
+    --danger: #991b1b;
+    --danger-bg: #fee2e2;
+    --danger-border: #fca5a5;
+    --amber-bg: #fffbeb;
+    --amber-border: #fde68a;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 2px 12px rgba(30,58,95,0.10);
+    --shadow-md: 0 4px 20px rgba(30,58,95,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-mid) 100%);
+    color: #fff;
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-shadow: 0 4px 16px rgba(19,40,67,0.4);
+  }
+  .header-left { display: flex; flex-direction: column; gap: 2px; }
+  .header-inst {
+    font-size: 12px;
+    font-weight: 500;
+    color: #93c5fd;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .header-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.3px;
+  }
+  .header-subtitle {
+    font-size: 12px;
+    color: #bfdbfe;
+    font-weight: 400;
+  }
+  .header-badge {
+    background: var(--gold);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── TABS ── */
+  .tab-bar {
+    background: var(--navy);
+    display: flex;
+    padding: 0 32px;
+    gap: 2px;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    color: #93c5fd;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 14px 20px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: #fff; background: rgba(255,255,255,0.06); }
+  .tab-btn.active {
+    color: var(--gold-light);
+    border-bottom-color: var(--gold-light);
+    font-weight: 700;
+  }
+
+  /* ── MAIN ── */
+  main { max-width: 1100px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, var(--navy-light), transparent);
+    border-radius: 2px;
+  }
+
+  /* ── SUMMARY BAR ── */
+  .summary-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .stat-box {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .stat-label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .stat-value { font-size: 28px; font-weight: 800; color: var(--navy); }
+  .stat-sub { font-size: 12px; color: var(--text-muted); }
+
+  /* ── STAFF CARDS GRID ── */
+  .staff-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .staff-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    border: 1px solid #e2e8f0;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .staff-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .staff-card.selesai { border-top: 4px solid var(--success); }
+  .staff-card.belum { border-top: 4px solid var(--gold); }
+  .avatar {
+    width: 54px; height: 54px;
+    background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 20px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .staff-nama { font-size: 14px; font-weight: 700; color: var(--navy); }
+  .staff-jawatan { font-size: 12px; color: var(--text-muted); }
+  .status-badge {
+    font-size: 12px; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .badge-selesai { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+  .badge-belum { background: var(--amber-bg); color: #92400e; border: 1px solid var(--amber-border); }
+  .staff-score { font-size: 13px; font-weight: 600; color: var(--navy); }
+  .staff-masa { font-size: 11px; color: var(--text-muted); }
+
+  /* ── URUS STAF ── */
+  .staf-form-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 28px;
+    max-width: 560px;
+  }
+  .form-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+  .form-group { flex: 1; min-width: 160px; display: flex; flex-direction: column; gap: 6px; }
+  .form-group label { font-size: 13px; font-weight: 600; color: var(--navy); }
+  .form-group input {
+    border: 1.5px solid #cbd5e1;
+    border-radius: var(--radius-sm);
+    padding: 9px 12px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus { border-color: var(--navy-light); box-shadow: 0 0 0 3px rgba(59,106,176,0.12); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: inherit; font-size: 14px; font-weight: 600;
+    padding: 10px 22px; border-radius: var(--radius-sm);
+    border: none; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-primary { background: var(--navy); color: #fff; }
+  .btn-primary:hover { background: var(--navy-dark); }
+  .btn-gold { background: var(--gold); color: #fff; }
+  .btn-gold:hover { background: #b45309; }
+  .btn-danger { background: var(--danger); color: #fff; font-size: 12px; padding: 6px 14px; }
+  .btn-danger:hover { background: #7f1d1d; }
+  .btn-success { background: #065f46; color: #fff; }
+  .btn-success:hover { background: #064e3b; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .staf-table-wrap {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .staf-table { width: 100%; border-collapse: collapse; }
+  .staf-table th {
+    background: var(--navy);
+    color: #bfdbfe;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 12px 16px;
+    text-align: left;
+  }
+  .staf-table td { padding: 12px 16px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+  .staf-table tr:last-child td { border-bottom: none; }
+  .staf-table tr:hover td { background: var(--bg); }
+  .staf-no-data { text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px; }
+
+  /* ── KUIZ TAB ── */
+  .kuiz-start-panel {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 40px;
+    max-width: 520px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .kuiz-icon { font-size: 52px; margin-bottom: 12px; }
+  .kuiz-start-title { font-size: 22px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+  .kuiz-start-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+  .kuiz-select {
+    width: 100%; padding: 11px 14px;
+    border: 1.5px solid #cbd5e1; border-radius: var(--radius-sm);
+    font-family: inherit; font-size: 14px; color: var(--text);
+    background: #fff; outline: none; margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .kuiz-select:focus { border-color: var(--navy-light); }
+  .kuiz-already-msg {
+    background: var(--amber-bg); border: 1px solid var(--amber-border);
+    border-radius: var(--radius-sm); padding: 12px 16px;
+    font-size: 13px; color: #92400e; font-weight: 500;
+    margin-bottom: 16px; display: none;
+  }
+
+  /* ── QUIZ CONTAINER ── */
+  #quiz-container { display: none; }
+  .quiz-header {
+    background: var(--card); border-radius: var(--radius);
+    padding: 16px 24px; box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .quiz-progress-label { font-size: 13px; font-weight: 600; color: var(--navy); white-space: nowrap; }
+  .quiz-progress-bar-wrap {
+    flex: 1; height: 8px; background: var(--bg2);
+    border-radius: 4px; overflow: hidden;
+  }
+  .quiz-progress-fill {
+    height: 100%; background: linear-gradient(to right, var(--navy), var(--navy-light));
+    border-radius: 4px; transition: width 0.4s ease;
+  }
+  .quiz-staff-label { font-size: 12px; color: var(--text-muted); }
+
+  .question-card {
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 32px;
+    max-width: 720px; margin: 0 auto;
+  }
+  .question-type-badge {
+    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 14px;
+  }
+  .badge-mcq { background: #dbeafe; color: #1e40af; }
+  .badge-likert { background: #ede9fe; color: #5b21b6; }
+  .question-text { font-size: 17px; font-weight: 600; color: var(--navy); margin-bottom: 24px; line-height: 1.5; }
+
+  /* Timer */
+  .timer-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+  .timer-bar-outer {
+    flex: 1; height: 10px; background: var(--bg2);
+    border-radius: 5px; overflow: hidden;
+  }
+  .timer-bar-inner {
+    height: 100%; border-radius: 5px;
+    background: linear-gradient(to right, var(--navy-light), var(--gold));
+    transition: width 1s linear, background 0.3s;
+  }
+  .timer-bar-inner.danger {
+    background: linear-gradient(to right, var(--danger), #f87171);
+  }
+  .timer-count {
+    font-size: 16px; font-weight: 800; color: var(--navy);
+    min-width: 32px; text-align: center;
+  }
+  .timer-count.danger { color: var(--danger); }
+
+  /* Options */
+  .options-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .option-label {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: var(--bg); border: 1.5px solid #e2e8f0;
+    border-radius: var(--radius-sm); padding: 13px 16px;
+    cursor: pointer; transition: all 0.15s; font-size: 14px; font-weight: 500;
+  }
+  .option-label:hover { border-color: var(--navy-light); background: #eef2ff; }
+  .option-label.selected { border-color: var(--navy); background: #dbeafe; color: var(--navy); font-weight: 600; }
+  .option-label input[type=radio] { accent-color: var(--navy); margin-top: 2px; flex-shrink: 0; }
+
+  .likert-scale { display: flex; justify-content: center; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+  .likert-option { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .likert-btn {
+    width: 52px; height: 52px;
+    border: 2px solid #cbd5e1; border-radius: 50%;
+    background: var(--bg); font-size: 18px; font-weight: 800;
+    color: var(--navy); cursor: pointer; transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .likert-btn:hover { border-color: var(--navy); background: #dbeafe; }
+  .likert-btn.selected { border-color: var(--navy); background: var(--navy); color: #fff; }
+  .likert-label { font-size: 10px; color: var(--text-muted); text-align: center; max-width: 60px; line-height: 1.2; }
+  .likert-labels-row {
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--text-muted); margin-bottom: 18px;
+    padding: 0 4px;
+  }
+
+  .question-actions { display: flex; justify-content: flex-end; }
+
+  /* ── SUMMARY SCREEN ── */
+  #summary-screen { display: none; }
+  .summary-card {
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: var(--shadow-md); padding: 40px;
+    max-width: 640px; margin: 0 auto; text-align: center;
+  }
+  .summary-icon { font-size: 60px; margin-bottom: 12px; }
+  .summary-title { font-size: 24px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
+  .summary-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+  .score-display {
+    background: linear-gradient(135deg, var(--navy-dark), var(--navy-mid));
+    color: #fff; border-radius: var(--radius);
+    padding: 20px 30px; margin-bottom: 24px;
+    display: inline-flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .score-num { font-size: 48px; font-weight: 800; line-height: 1; }
+  .score-out { font-size: 14px; color: #bfdbfe; }
+  .likert-summary-table {
+    width: 100%; border-collapse: collapse;
+    text-align: left; margin-bottom: 28px; font-size: 13px;
+  }
+  .likert-summary-table th {
+    background: var(--bg2); color: var(--navy);
+    padding: 8px 12px; font-weight: 600;
+  }
+  .likert-summary-table td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; }
+  .likert-summary-table tr:last-child td { border-bottom: none; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center; padding: 60px 20px; color: var(--text-muted);
+  }
+  .empty-state .ei { font-size: 48px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; }
+
+  /* ── ALERT ── */
+  .alert {
+    border-radius: var(--radius-sm); padding: 12px 16px;
+    font-size: 13px; font-weight: 500; margin-bottom: 16px;
+    display: none;
+  }
+  .alert-error { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); }
+  .alert.show { display: block; }
+
+  /* ── PIN OVERLAY ── */
+  .pin-overlay {
+    position: fixed; inset: 0;
+    background: rgba(19,40,67,0.72);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+  }
+  .pin-box {
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: var(--shadow-md); padding: 36px 32px;
+    width: 340px; text-align: center;
+  }
+  .pin-icon { font-size: 40px; margin-bottom: 10px; }
+  .pin-title { font-size: 18px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+  .pin-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+  .pin-input {
+    width: 100%; padding: 12px; text-align: center;
+    font-size: 22px; font-weight: 800; letter-spacing: 0.3em;
+    border: 2px solid #cbd5e1; border-radius: var(--radius-sm);
+    font-family: inherit; color: var(--navy); outline: none;
+    margin-bottom: 10px; background: var(--bg);
+    transition: border-color 0.2s;
+  }
+  .pin-input:focus { border-color: var(--navy-light); }
+  .pin-error { font-size: 13px; color: var(--danger); font-weight: 600; min-height: 20px; margin-bottom: 12px; }
+  .pin-btn-row { display: flex; gap: 10px; }
+
+  /* ── LAPORAN ── */
+  .laporan-toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px; margin-bottom: 20px;
+  }
+  .laporan-meta { font-size: 13px; color: var(--text-muted); }
+  .laporan-table-wrap {
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: var(--shadow); overflow: hidden; margin-bottom: 28px;
+  }
+  .laporan-table { width: 100%; border-collapse: collapse; }
+  .laporan-table th {
+    background: var(--navy); color: #bfdbfe;
+    font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.05em; padding: 12px 16px; text-align: left;
+  }
+  .laporan-table td { padding: 11px 16px; border-bottom: 1px solid #f1f5f9; font-size: 14px; vertical-align: middle; }
+  .laporan-table tr:last-child td { border-bottom: none; }
+  .laporan-table tr:hover td { background: var(--bg); }
+  .gred-badge {
+    display: inline-block; font-size: 13px; font-weight: 800;
+    width: 32px; height: 32px; border-radius: 50%;
+    text-align: center; line-height: 32px;
+  }
+  .gred-a { background: #d1fae5; color: #065f46; }
+  .gred-b { background: #dbeafe; color: #1e40af; }
+  .gred-c { background: var(--gold-pale); color: #92400e; }
+  .gred-d { background: var(--danger-bg); color: var(--danger); }
+  .laporan-markah { font-size: 15px; font-weight: 700; color: var(--navy); }
+  .laporan-pct   { font-size: 12px; color: var(--text-muted); }
+  .gred-legend {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 16px 20px; margin-bottom: 20px;
+    font-size: 13px;
+  }
+  .gred-legend-item { display: flex; align-items: center; gap: 8px; }
+
+  /* ── IMPORT/EXPORT PANEL ── */
+  .sync-panel {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid var(--navy-light);
+  }
+  .sync-panel-title {
+    font-size: 14px; font-weight: 700; color: var(--navy);
+    margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
+  }
+  .sync-panel-desc {
+    font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5;
+  }
+  .sync-btn-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .import-label {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: inherit; font-size: 14px; font-weight: 600;
+    padding: 10px 22px; border-radius: var(--radius-sm);
+    background: var(--navy); color: #fff;
+    border: none; cursor: pointer; transition: all 0.2s;
+  }
+  .import-label:hover { background: var(--navy-dark); }
+  #import-file-input { display: none; }
+  .sync-status {
+    font-size: 13px; font-weight: 600; padding: 6px 12px;
+    border-radius: var(--radius-sm); display: none;
+  }
+  .sync-status.ok  { background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); }
+  .sync-status.err { background: var(--danger-bg);  color: var(--danger);  border: 1px solid var(--danger-border); }
+  .sync-status.show { display: inline-block; }
+
+  @media print {
+    header, .tab-bar, .laporan-toolbar .btn, .gred-legend, .sync-panel { display: none !important; }
+    body { background: #fff; }
+    main { padding: 0; max-width: 100%; }
+    .view { display: none !important; }
+    #view-laporan { display: block !important; }
+    .laporan-table-wrap { box-shadow: none; border: 1px solid #ccc; }
+    .print-header { display: block !important; }
+  }
+  .print-header {
+    display: none;
+    text-align: center; margin-bottom: 20px; padding-bottom: 12px;
+    border-bottom: 2px solid var(--navy);
+  }
+  .print-header h2 { font-size: 18px; color: var(--navy); }
+  .print-header p  { font-size: 12px; color: var(--text-muted); }
+
+  @media (max-width: 700px) {
+    .summary-bar { grid-template-columns: repeat(2, 1fr); }
+    .quiz-header { flex-direction: column; align-items: flex-start; }
+    header { padding: 16px 20px; }
+    .tab-bar { padding: 0 12px; overflow-x: auto; }
+    .question-card { padding: 20px; }
+    .likert-scale { gap: 8px; }
+    .likert-btn { width: 44px; height: 44px; font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<!-- HEADER -->
+<header>
+<div class="header-left">
+<span class="header-inst">Kolej Komuniti Jempol, Negeri Sembilan</span>
+<span class="header-title">🏛️ Kuiz Tatakelola &amp; Integriti</span>
+<span class="header-subtitle">Sistem Penilaian Pengetahuan Integriti Staf</span>
+</div>
+<span class="header-badge" id="year-badge">2025</span>
+</header>
+<!-- TAB BAR -->
+<div class="tab-bar">
+<button class="tab-btn active" onclick="showView('dashboard')" data-view="dashboard">📊 Dashboard</button>
+<button class="tab-btn" onclick="showView('kuiz')" data-view="kuiz">📝 Mula Kuiz</button>
+<button class="tab-btn" onclick="bukaAdmin('staf')" data-view="staf" id="tab-staf">🔒 Urus Staf</button>
+<button class="tab-btn" onclick="bukaAdmin('laporan')" data-view="laporan" id="tab-laporan">🔒 Laporan Markah</button>
+</div>
+<!-- MAIN -->
+<main>
+<!-- ===== DASHBOARD ===== -->
+<div id="view-dashboard" class="view active">
+<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;">
+<div class="section-title" style="margin-bottom:0;">📊 Dashboard Penjejakan Kuiz</div>
+<div style="display:flex;align-items:center;gap:10px;">
+  <span class="sync-status" id="gs-dash-status"></span>
+  <button class="btn btn-primary" onclick="muatSemulaDashboard()" style="font-size:13px;padding:8px 16px;">🔄 Refresh Data</button>
+</div>
+</div>
+<div class="summary-bar" id="summary-bar">
+<div class="stat-box">
+<span class="stat-label">Jumlah Staf</span>
+<span class="stat-value" id="stat-total">0</span>
+<span class="stat-sub">didaftarkan</span>
+</div>
+<div class="stat-box">
+<span class="stat-label">Sudah Jawab</span>
+<span class="stat-value" id="stat-selesai" style="color:var(--success)">0</span>
+<span class="stat-sub">staf</span>
+</div>
+<div class="stat-box">
+<span class="stat-label">Belum Jawab</span>
+<span class="stat-value" id="stat-belum" style="color:var(--gold)">0</span>
+<span class="stat-sub">staf</span>
+</div>
+<div class="stat-box">
+<span class="stat-label">% Siap</span>
+<span class="stat-value" id="stat-pct">0%</span>
+<span class="stat-sub">pencapaian keseluruhan</span>
+</div>
+</div>
+<!-- Progress bar keseluruhan -->
+<div style="background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 24px;margin-bottom:24px;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+<span style="font-size:14px;font-weight:600;color:var(--navy);">Kemajuan Keseluruhan</span>
+<span style="font-size:15px;font-weight:800;color:var(--navy);" id="dash-pct-label">0%</span>
+</div>
+<div style="height:14px;background:var(--bg2);border-radius:7px;overflow:hidden;">
+<div id="dash-progress-fill" style="height:100%;width:0%;background:linear-gradient(to right,#1e3a5f,#3b6ab0);border-radius:7px;transition:width 0.6s ease;"></div>
+</div>
+<div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--text-muted);">
+<span id="dash-prog-done">0 selesai</span>
+<span id="dash-prog-total">0 staf</span>
+</div>
+</div>
+<div class="staff-grid" id="staff-grid"></div>
+</div>
+
+<!-- ===== MULA KUIZ ===== -->
+<div id="view-kuiz" class="view">
+<div class="section-title">📝 Mula Kuiz Integriti</div>
+<!-- Start Panel -->
+<div id="kuiz-start-panel" class="kuiz-start-panel">
+<div class="kuiz-icon">📋</div>
+<div class="kuiz-start-title">Kuiz Tatakelola &amp; Integriti</div>
+<div class="kuiz-start-sub">20 soalan · Campuran MCQ &amp; Skala Persetujuan · Setiap soalan ada masa terhad</div>
+<div class="alert alert-error" id="kuiz-alert">Sila pilih nama anda terlebih dahulu.</div>
+<div class="kuiz-already-msg" id="kuiz-already">⚠️ Anda sudah menjawab kuiz ini. Hubungi admin jika perlu ulang.</div>
+<select class="kuiz-select" id="kuiz-nama-select" onchange="semakStaf()">
+<option value="">— Pilih Nama Anda —</option>
+</select>
+<br>
+<button class="btn btn-gold" onclick="mulaKuiz()" style="width:100%;justify-content:center;font-size:15px;padding:13px;">🚀 Mula Kuiz</button>
+</div>
+<!-- Quiz Container -->
+<div id="quiz-container">
+<div class="quiz-header">
+<div>
+<div class="quiz-progress-label" id="quiz-progress-label">Soalan 1 / 20</div>
+<div class="quiz-staff-label" id="quiz-staff-label"></div>
+</div>
+<div class="quiz-progress-bar-wrap">
+<div class="quiz-progress-fill" id="quiz-progress-fill" style="width:5%"></div>
+</div>
+</div>
+<div class="question-card" id="question-card"><!-- rendered by JS --></div>
+</div>
+<!-- Summary Screen -->
+<div id="summary-screen">
+<div class="summary-card">
+<div class="summary-icon">🎉</div>
+<div class="summary-title">Kuiz Selesai!</div>
+<div class="summary-sub" id="summary-staff-name">Tahniah kerana menyiapkan kuiz.</div>
+<div class="score-display">
+<span class="score-num" id="summary-score">0</span>
+<span class="score-out">markah daripada 12 (MCQ)</span>
+</div>
+<table class="likert-summary-table" id="likert-summary-table">
+<thead><tr><th>#</th><th>Pernyataan</th><th>Skor</th></tr></thead>
+<tbody id="likert-summary-body"></tbody>
+</table>
+<button class="btn btn-primary" onclick="hantarKuiz()" style="width:100%;justify-content:center;font-size:15px;padding:13px;">✅ Hantar &amp; Simpan Keputusan</button>
+</div>
+</div>
+</div>
+
+<!-- ===== URUS STAF ===== -->
+<div id="view-staf" class="view">
+<div class="section-title">⚙️ Urus Senarai Staf</div>
+
+<!-- ── GOOGLE SHEETS SETUP PANEL ── -->
+<div class="sync-panel" style="border-left-color:#0f9d58;">
+<div class="sync-panel-title">🟢 Sambung ke Google Sheets (Wajib Setup Sekali Sahaja)</div>
+<div class="sync-panel-desc">
+  Setelah setup, semua jawapan peserta akan <strong>terus masuk</strong> ke Google Sheets anda secara automatik — anda boleh tengok markah pada bila-bila masa tanpa peserta perlu buat apa-apa.
+  <br><br>
+  <strong>Langkah-langkah setup:</strong><br>
+  1️⃣ Pergi ke <a href="https://sheets.google.com" target="_blank" style="color:#0f9d58;font-weight:600;">sheets.google.com</a> → buat spreadsheet baru → namakan "Kuiz Tatakelola KKJ"<br>
+  2️⃣ Dalam spreadsheet, klik menu <strong>Extensions → Apps Script</strong><br>
+  3️⃣ Padam semua kod sedia ada, kemudian tampal kod di bawah:<br>
+  <textarea readonly rows="14" style="width:100%;margin-top:10px;padding:10px;font-family:monospace;font-size:12px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;color:#1e293b;resize:vertical;"
+  id="apps-script-code">function doPost(e) {
+  try {
+    var body = JSON.parse(e.postData.contents);
+    if (body.action === 'tambahJawapan') {
+      var ss = SpreadsheetApp.getActiveSpreadsheet();
+      var sh = ss.getSheetByName('Jawapan') || ss.insertSheet('Jawapan');
+      if (sh.getLastRow() === 0) {
+        sh.appendRow(['staffId','nama','masa','skor','selesai']);
+      }
+      var d = body.data;
+      sh.appendRow([d.staffId, d.namastaf, d.masa, d.skor, d.selesai ? 'Ya' : 'Tidak']);
+      return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);
+    }
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({ok:false,error:err.message})).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+function doGet(e) {
+  var action = e.parameter.action;
+  if (action === 'test') {
+    return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);
+  }
+  if (action === 'ambilJawapan') {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sh = ss.getSheetByName('Jawapan');
+    if (!sh || sh.getLastRow() <= 1) return ContentService.createTextOutput(JSON.stringify([])).setMimeType(ContentService.MimeType.JSON);
+    var rows = sh.getRange(2, 1, sh.getLastRow()-1, 5).getValues();
+    var result = rows.map(function(r){ return {staffId:r[0],namastaf:r[1],masa:r[2],skor:r[3],selesai:true}; });
+    return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
+  }
+  return ContentService.createTextOutput(JSON.stringify({ok:false})).setMimeType(ContentService.MimeType.JSON);
+}</textarea>
+  4️⃣ Klik <strong>Deploy → New deployment → Web app</strong> → set <em>Execute as: Me</em>, <em>Who has access: Anyone</em> → klik <strong>Deploy</strong><br>
+  5️⃣ Copy URL yang diberikan, tampal di bawah dan klik <strong>Simpan URL</strong>
+</div>
+<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px;">
+  <input type="text" id="gs-url-input" placeholder="https://script.google.com/macros/s/..."
+    style="flex:1;min-width:260px;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:13px;outline:none;"
+    value="">
+  <button class="btn btn-success" onclick="simpanGSUrl()">💾 Simpan URL</button>
+  <button class="btn" style="background:var(--bg2);color:var(--text);" onclick="testGSUrl()">🧪 Test Sambungan</button>
+</div>
+<div style="margin-top:8px;"><span class="sync-status" id="gs-url-status"></span></div>
+</div>
+
+<!-- Upload senarai -->
+<div class="staf-form-card">
+<div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;">📤 Upload Senarai Nama</div>
+<div style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">
+  Tampal senarai nama — satu nama satu baris. Nama sedia ada tidak akan diganda.
+</div>
+<div class="alert alert-error" id="staf-alert"></div>
+<textarea id="input-senarai" rows="8"
+  style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:14px;resize:vertical;outline:none;color:var(--text);line-height:1.7;"
+  placeholder="Ahmad bin Ali&#10;Siti binti Hamid&#10;Razif bin Zulkifli&#10;..."></textarea>
+<div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+<button class="btn btn-primary" onclick="uploadSenarai()">📥 Muatkan Senarai</button>
+<button class="btn" style="background:var(--bg2);color:var(--text);" onclick="resetSenaraiInput()">🗑️ Kosongkan Kotak</button>
+</div>
+</div>
+
+<!-- Tambah satu nama -->
+<div class="staf-form-card" style="margin-top:0;">
+<div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:14px;">➕ Tambah Nama Satu-Satu</div>
+<div class="form-row">
+<div class="form-group">
+<label for="input-nama">Nama Penuh</label>
+<input type="text" id="input-nama" placeholder="cth: Ahmad bin Ali" onkeydown="if(event.key==='Enter')addStaf()">
+</div>
+</div>
+<button class="btn btn-primary" onclick="addStaf()">➕ Tambah</button>
+</div>
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
+<span style="font-size:14px;font-weight:700;color:var(--navy);">Senarai Staf Berdaftar</span>
+<button class="btn btn-danger" onclick="resetKeAsal()" style="font-size:12px;padding:7px 16px;">⚠️ Reset &amp; Muat Semula Senarai Asal</button>
+</div>
+<div class="staf-table-wrap">
+<table class="staf-table">
+<thead><tr><th>#</th><th>Nama</th><th>Status Kuiz</th><th>Tindakan</th></tr></thead>
+<tbody id="staf-tbody"></tbody>
+</table>
+<div class="staf-no-data" id="staf-no-data" style="display:none;">Tiada staf didaftarkan.</div>
+</div>
+</div>
+
+<!-- ===== LAPORAN MARKAH ===== -->
+<div id="view-laporan" class="view">
+<!-- Print header (hidden on screen, shown when printing) -->
+<div class="print-header">
+<h2>Laporan Markah Kuiz Tatakelola &amp; Integriti</h2>
+<p>Kolej Komuniti Jempol, Negeri Sembilan &nbsp;|&nbsp; Dicetak: <span id="print-date"></span></p>
+</div>
+
+<div class="laporan-toolbar">
+<div>
+<div class="section-title" style="margin-bottom:4px;">📋 Laporan Markah Penilaian</div>
+<div class="laporan-meta" id="laporan-meta">Markah berasaskan 12 soalan MCQ</div>
+</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+  <button class="btn btn-success" onclick="muatSemulaDariSheets()">🔄 Muat Semula dari Sheets</button>
+  <span class="sync-status" id="gs-muat-status"></span>
+  <button class="btn btn-primary" onclick="cetakLaporan()">🖨️ Cetak / Simpan PDF</button>
+</div>
+</div>
+
+<!-- Gred legend -->
+<div class="gred-legend">
+<strong style="color:var(--navy);margin-right:4px;">Skala Gred:</strong>
+<div class="gred-legend-item"><span class="gred-badge gred-a">A</span> 10–12 markah (83–100%)</div>
+<div class="gred-legend-item"><span class="gred-badge gred-b">B</span> 7–9 markah (58–82%)</div>
+<div class="gred-legend-item"><span class="gred-badge gred-c">C</span> 4–6 markah (33–57%)</div>
+<div class="gred-legend-item"><span class="gred-badge gred-d">D</span> 0–3 markah (0–32%)</div>
+</div>
+<div class="laporan-table-wrap">
+<table class="laporan-table">
+<thead>
+<tr>
+<th>#</th><th>Nama Staf</th><th>Markah MCQ</th><th>Peratus</th><th>Gred</th><th>Tarikh &amp; Masa</th><th>Status</th>
+</tr>
+</thead>
+<tbody id="laporan-tbody"></tbody>
+</table>
+<div class="staf-no-data" id="laporan-no-data" style="display:none;">Tiada staf yang telah menjawab kuiz.</div>
+</div>
+</div>
+</main>
+
+<!-- PIN OVERLAY -->
+<div class="pin-overlay" id="pin-overlay" style="display:none;">
+<div class="pin-box">
+<div class="pin-icon">🔐</div>
+<div class="pin-title">Akses Admin</div>
+<div class="pin-sub">Masukkan PIN untuk lihat Laporan Markah</div>
+<input class="pin-input" type="password" id="pin-input" maxlength="6" placeholder="••••••"
+  onkeydown="if(event.key==='Enter')sahkanPin()">
+<div class="pin-error" id="pin-error"></div>
+<div class="pin-btn-row">
+<button class="btn btn-primary" onclick="sahkanPin()" style="flex:1;justify-content:center;">✅ Masuk</button>
+<button class="btn" onclick="tutupPin()" style="flex:1;justify-content:center;background:var(--bg2);color:var(--text);">Batal</button>
+</div>
+</div>
+</div>
+
+<script>
+// =====================================================================
+// DATA
+// =====================================================================
+const LIKERT_LABELS = ['Sangat Tidak Setuju','Tidak Setuju','Neutral','Setuju','Sangat Setuju'];
+
+const SOALAN = [
+  { id:1,  jenis:'mcq', masa:25, teks:'Apakah maksud "integriti" dalam konteks perkhidmatan awam?',
+    pilihan:['Ketepatan masa','Kejujuran dan amanah dalam tugas','Kecekapan kerja','Kepatuhan jadual'], betul:1 },
+  { id:2,  jenis:'mcq', masa:25, teks:'Dokumen utama yang menjadi panduan tatakelola kolej komuniti di Malaysia ialah?',
+    pilihan:['Akta Syarikat','Pelan Integriti Nasional','Rang Undang-Undang Parlimen','Perjanjian ASEAN'], betul:1 },
+  { id:3,  jenis:'mcq', masa:25, teks:'Konflik kepentingan berlaku apabila?',
+    pilihan:['Pekerja hadir lewat','Kepentingan peribadi mempengaruhi keputusan rasmi','Ketua tidak hadir mesyuarat','Anggaran belanjawan melebihi had'], betul:1 },
+  { id:4,  jenis:'mcq', masa:25, teks:'Tindakan yang betul apabila menerima hadiah daripada pembekal ialah?',
+    pilihan:['Terima dan simpan','Kongsi dengan rakan sekerja','Tolak atau laporkan kepada ketua','Gunakan untuk keperluan pejabat'], betul:2 },
+  { id:5,  jenis:'mcq', masa:25, teks:'SPRM adalah singkatan bagi?',
+    pilihan:['Suruhanjaya Pencegahan Rasuah Malaysia','Sistem Pengurusan Rekod Malaysia','Syarikat Pelaburan Rakyat Malaysia','Suruhanjaya Pelajaran Rakyat Malaysia'], betul:0 },
+  { id:6,  jenis:'mcq', masa:25, teks:'Apakah yang dimaksudkan dengan "whistleblowing"?',
+    pilihan:['Meniup wisel semasa sukan','Melaporkan salah laku atau rasuah secara bertanggungjawab','Membuat aduan peribadi kepada media','Menolak arahan ketua'], betul:1 },
+  { id:7,  jenis:'mcq', masa:25, teks:'Perisytiharan harta wajib dibuat oleh penjawat awam kepada?',
+    pilihan:['KWSP','Jabatan Pendaftaran Negara','Ketua Jabatan / SPRM','Bank Negara'], betul:2 },
+  { id:8,  jenis:'mcq', masa:25, teks:'Tatakelola yang baik memerlukan sifat?',
+    pilihan:['Pemusatan kuasa','Kerahsiaan penuh','Akauntabiliti dan ketelusan','Autonomi mutlak'], betul:2 },
+  { id:9,  jenis:'mcq', masa:25, teks:'Apakah maksud "akauntabiliti"?',
+    pilihan:['Kebolehan mengira kewangan','Tanggungjawab untuk menjelaskan tindakan dan keputusan','Hak untuk tidak didedahkan','Kuasa membuat keputusan sendiri'], betul:1 },
+  { id:10, jenis:'mcq', masa:25, teks:'Kod etika kakitangan awam bertujuan untuk?',
+    pilihan:['Mengurangkan gaji pekerja','Membataskan kebebasan individu','Memastikan perlakuan profesional dan berintegriti','Mengawal media sosial pekerja'], betul:2 },
+  { id:11, jenis:'mcq', masa:25, teks:'Penyalahgunaan kuasa dalam urusan rasmi termasuk?',
+    pilihan:['Menggunakan kemudahan pejabat untuk kepentingan peribadi','Memohon cuti tahunan','Menghadiri latihan','Menulis laporan kerja'], betul:0 },
+  { id:12, jenis:'mcq', masa:25, teks:'Apakah maksud "ketelusan" dalam tatakelola?',
+    pilihan:['Semua maklumat mesti dirahsiakan','Proses dan keputusan boleh disemak dan difahami oleh pihak berkepentingan','Hanya ketua boleh tahu maklumat dalaman','Laporan hanya untuk audit dalaman'], betul:1 },
+  { id:13, jenis:'likert', masa:15, teks:'Saya memahami tanggungjawab saya untuk melaporkan sebarang perbuatan rasuah yang saya saksikan.' },
+  { id:14, jenis:'likert', masa:15, teks:'Saya sentiasa mengelak daripada situasi yang boleh menimbulkan konflik kepentingan dalam tugas saya.' },
+  { id:15, jenis:'likert', masa:15, teks:'Kolej saya menyediakan saluran yang jelas untuk membuat aduan berkaitan integriti.' },
+  { id:16, jenis:'likert', masa:15, teks:'Saya percaya amalan tatakelola yang baik dapat meningkatkan kepercayaan awam terhadap institusi.' },
+  { id:17, jenis:'likert', masa:15, teks:'Saya memahami kandungan Kod Etika Kakitangan Awam dan mengamalkannya dalam tugas harian.' },
+  { id:18, jenis:'likert', masa:15, teks:'Latihan integriti yang disediakan oleh institusi adalah mencukupi dan berkesan.' },
+  { id:19, jenis:'likert', masa:15, teks:'Saya berasa selesa untuk melaporkan salah laku rakan sekerja jika berlaku pelanggaran integriti.' },
+  { id:20, jenis:'likert', masa:15, teks:'Saya yakin bahawa tindakan tegas akan diambil terhadap pelanggaran integriti di institusi saya.' },
+];
+
+const SAMPLE_STAF = [
+  { id:'ss01', nama:'AMALULKHAIR BIN SARBINI' },
+  { id:'ss02', nama:'SITI NOOR ZIHAN BINTI HANIPAH' },
+  { id:'ss03', nama:'NOR AZAWATI BINTI ABU TALIB' },
+  { id:'ss04', nama:'MOHD SAIFUL SOBRIE BIN SELAMAT' },
+  { id:'ss05', nama:'MOHD FADHIL BIN MUSA' },
+  { id:'ss06', nama:'HASLINDA BINTI MISKAN' },
+  { id:'ss07', nama:'AZIZOL BIN DURALIM' },
+  { id:'ss08', nama:'NORHAMIMI BINTI MOHD NASIR' },
+  { id:'ss09', nama:'NORNIZAM BIN MOHTAR' },
+  { id:'ss10', nama:'MOHAMAD HANIF BIN MD GHAZALLI' },
+  { id:'ss11', nama:'CHE JURAHANIM BINTI CHE JOHARI' },
+  { id:'ss12', nama:'SHAHRIZAL BIN ABDUL WAHAB' },
+  { id:'ss13', nama:'MEGAT ARSHAD BIN MEGAT HAMZAH' },
+  { id:'ss14', nama:'RODZIAH BINTI ABD HAMIN' },
+  { id:'ss15', nama:'SAIFUL AZMI BIN ABDULLAH' },
+  { id:'ss16', nama:'AL\'NURUL ISWAN BIN MUSTAPHA' },
+  { id:'ss17', nama:'NURUL AKMA BINTI AHMAD' },
+  { id:'ss18', nama:'NORHAZSUWANIDA BINTI ABDUL AZIZ' },
+  { id:'ss19', nama:'AFIDAH BINTI ZAINAL' },
+  { id:'ss20', nama:'IRNANI BINTI IBRAHIM' },
+  { id:'ss21', nama:'HERIANNY BINTI HOLEN' },
+  { id:'ss22', nama:'NUR HASHIKIN BINTI MOHAMAD SUUT' },
+  { id:'ss23', nama:'NOR ISZUANI A/P ISUK' },
+  { id:'ss24', nama:'MAHADI BIN MOHAMAD ALI' },
+  { id:'ss25', nama:'MOHD HAFIDZIE BIN BANI' },
+  { id:'ss26', nama:'MD HANIM BIN MUSTANER' },
+  { id:'ss27', nama:'HAZIZEE BIN HASHIM' },
+  { id:'ss28', nama:'MOHD SYAFIQ BIN RADZALI' },
+  { id:'ss29', nama:'AZHAR BIN SHARIF' },
+  { id:'ss30', nama:'MOHD NORDIN BIN MARZUNI' },
+  { id:'ss31', nama:'MOHD RIZAL BIN KARIM' },
+  { id:'ss32', nama:'AZLAN BIN ALIAS' },
+  { id:'ss33', nama:'AZLI BIN AHMED' },
+  { id:'ss34', nama:'NORHISHAM BIN MD SAAD' },
+  { id:'ss35', nama:'MOHAMMAD ARSYAD BIN MD GHANI' },
+  { id:'ss36', nama:'SHAIFUL BAHARIN BIN MAZLAN' },
+  { id:'ss37', nama:'MUHAMMAD HAZIM FAHMI BIN MOHD GHAFAR' },
+  { id:'ss38', nama:'MOHD SHAFIE BIN RAHAMAN' },
+  { id:'ss39', nama:'HALIJAH BINTI ISMAIL' },
+  { id:'ss40', nama:'RAFIE BIN KARIS' },
+  { id:'ss41', nama:'ARNI KESUMAWATI BINTI HASAN' },
+  { id:'ss42', nama:'SHARINA ASHIKIN BINTI YAHAYA' },
+  { id:'ss43', nama:'MOHD ZAMRI BIN RAHAMAN' },
+  { id:'ss44', nama:'MOHD RIDZUAN BIN MOHAMAD SHARIP' },
+  { id:'ss45', nama:'AZAMTA KARYA ZAWAL AZI BIN HUSSIN' },
+  { id:'ss46', nama:'ROSMAWATY BINTI AHMAD' },
+  { id:'ss47', nama:'MASRINA BINTI MUHAMAD' },
+  { id:'ss48', nama:'HASNOL AZIZEE BIN MUHAMAD' },
+  { id:'ss49', nama:'NOR SAMSILA BINTI ISMAIL' },
+  { id:'ss50', nama:'MUHAMMAD SYAWAL BIN YAAKOB' },
+  { id:'ss51', nama:'MOHD ASRI BIN BAHARUDDIN' },
+  { id:'ss52', nama:'SUHIRMAN BIN MOHAMMAD' },
+  { id:'ss53', nama:'MOHD SYAHRULZAMAN BIN SAPAR' },
+  { id:'ss54', nama:'ZAIDI BIN ABDUL RAHMAN' },
+  { id:'ss55', nama:'AZALAN SHAH BIN RAMLI' },
+  { id:'ss56', nama:'ZAFRAN BIN ABU YAZID' },
+  { id:'ss57', nama:'MOHD AZHAR BIN DERASIT' },
+  { id:'ss58', nama:'NURUL HARNIZAH BINTI MOHD ZIN' },
+  { id:'ss59', nama:'NORMARLINA BINTI MOHAMAD LUTPI' },
+  { id:'ss60', nama:'MESHETA BINTI MOHD NOOR' },
+  { id:'ss61', nama:'AZIZI BIN MANSOR' },
+  { id:'ss62', nama:'MUHAMMAD ARIF BIN ABDULLAH' },
+  { id:'ss63', nama:'NUR AMALINA BINTI RUMLI' },
+  { id:'ss64', nama:'MOHD DANIEL BIN WAHAB' },
+  { id:'ss65', nama:'NORASHIMAH BINTI UJANG' },
+  { id:'ss66', nama:'HANIS ELIANNA BINTI MHD LAZIM' },
+];
+
+// =====================================================================
+// STATE
+// =====================================================================
+let stafList    = [];
+let jawapanList = [];
+let quizState   = { staffId: null, currentQ: 0, sesi: [] };
+let timerInterval = null;
+
+// =====================================================================
+// LOCALSTORAGE
+// =====================================================================
+function saveStaf()    { localStorage.setItem('tatakelola_staf', JSON.stringify(stafList)); }
+function loadStaf()    { const d = localStorage.getItem('tatakelola_staf'); stafList = d ? JSON.parse(d) : null; }
+function saveJawapan() { localStorage.setItem('tatakelola_jawapan', JSON.stringify(jawapanList)); }
+function loadJawapan() { const d = localStorage.getItem('tatakelola_jawapan'); jawapanList = d ? JSON.parse(d) : []; }
+
+// =====================================================================
+// GOOGLE SHEETS — KONFIGURASI
+// =====================================================================
+// Letak URL Apps Script anda di sini selepas setup (lihat arahan dalam panel Urus Staf)
+let APPS_SCRIPT_URL = localStorage.getItem('tatakelola_gsurl') || '';
+
+function simpanGSUrl() {
+  const url = document.getElementById('gs-url-input').value.trim();
+  const st  = document.getElementById('gs-url-status');
+  if (!url.startsWith('https://script.google.com/')) {
+    st.textContent = '❌ URL tidak sah. Mesti bermula dengan https://script.google.com/';
+    st.className = 'sync-status err show';
+    return;
+  }
+  APPS_SCRIPT_URL = url;
+  localStorage.setItem('tatakelola_gsurl', url);
+  st.textContent = '✅ URL berjaya disimpan!';
+  st.className = 'sync-status ok show';
+  setTimeout(() => { st.className = 'sync-status'; }, 3000);
+}
+
+function testGSUrl() {
+  if (!APPS_SCRIPT_URL) { alert('Sila isi URL Apps Script dahulu.'); return; }
+  const st = document.getElementById('gs-url-status');
+  st.textContent = '⏳ Menguji sambungan...';
+  st.className = 'sync-status ok show';
+  fetch(APPS_SCRIPT_URL + '?action=test')
+    .then(r => r.json())
+    .then(d => {
+      if (d.ok) {
+        st.textContent = '✅ Sambungan berjaya! Google Sheets sedia digunakan.';
+        st.className = 'sync-status ok show';
+      } else {
+        throw new Error(d.error || 'Respons tidak diiktiraf');
+      }
+    })
+    .catch(e => {
+      st.textContent = '❌ Gagal: ' + e.message;
+      st.className = 'sync-status err show';
+    });
+}
+
+// =====================================================================
+// GOOGLE SHEETS — HANTAR JAWAPAN
+// =====================================================================
+function hantarKeSheets(rekod) {
+  if (!APPS_SCRIPT_URL) return Promise.resolve(); // jika URL belum diset, skip
+  return fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' }, // text/plain elak CORS preflight
+    body: JSON.stringify({ action: 'tambahJawapan', data: rekod })
+  }).catch(() => {}); // senyap jika gagal — data masih disimpan dalam localStorage
+}
+
+// =====================================================================
+// GOOGLE SHEETS — BACA JAWAPAN (untuk Laporan Markah)
+// =====================================================================
+function muatJawapanDariSheets(callback, statusElId) {
+  if (!APPS_SCRIPT_URL) { callback(false); return; }
+  // Cari elemen status — guna yang dihantar, atau cari yang kelihatan
+  function getStEl() {
+    if (statusElId) return document.getElementById(statusElId);
+    // Auto-detect berdasarkan tab aktif
+    const aktif = document.querySelector('.view.active');
+    if (!aktif) return null;
+    return aktif.querySelector('.sync-status') || null;
+  }
+  const st = getStEl();
+  if (st) { st.textContent = '⏳ Memuat data dari Google Sheets...'; st.className = 'sync-status ok show'; }
+  fetch(APPS_SCRIPT_URL + '?action=ambilJawapan')
+    .then(r => r.json())
+    .then(data => {
+      if (!Array.isArray(data)) throw new Error('Data tidak sah');
+      // Ganti terus jawapanList dengan data dari Sheets (sumber kebenaran)
+      data.forEach(j => {
+        if (!jawapanList.find(x => x.staffId === j.staffId)) {
+          jawapanList.push(j);
+        } else {
+          const idx = jawapanList.findIndex(x => x.staffId === j.staffId);
+          jawapanList[idx] = j;
+        }
+      });
+      saveJawapan();
+      const stNow = getStEl();
+      if (stNow) {
+        stNow.textContent = '✅ ' + data.length + ' rekod dari Sheets.';
+        stNow.className = 'sync-status ok show';
+        setTimeout(() => { stNow.className = 'sync-status'; }, 4000);
+      }
+      callback(true);
+    })
+    .catch(e => {
+      const stNow = getStEl();
+      if (stNow) {
+        stNow.textContent = '❌ Gagal: ' + e.message;
+        stNow.className = 'sync-status err show';
+        setTimeout(() => { stNow.className = 'sync-status'; }, 5000);
+      }
+      callback(false);
+    });
+}
+
+function muatSemulaDashboard() {
+  if (!APPS_SCRIPT_URL) {
+    const st = document.getElementById('gs-dash-status');
+    st.textContent = '⚠️ URL Sheets belum diset. Pergi ke tab Urus Staf.';
+    st.className = 'sync-status err show';
+    setTimeout(() => { st.className = 'sync-status'; }, 5000);
+    return;
+  }
+  muatJawapanDariSheets(function(ok) {
+    if (ok) renderDashboard();
+  }, 'gs-dash-status');
+}
+
+// =====================================================================
+// NAVIGATION
+// =====================================================================
+function showView(viewId) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === viewId);
+  });
+  document.getElementById('view-' + viewId).classList.add('active');
+
+  if (viewId === 'kuiz') {
+    renderKuizStart();
+  } else if (viewId === 'staf') {
+    renderStafTable();
+  } else if (viewId === 'dashboard') {
+    if (APPS_SCRIPT_URL) {
+      muatJawapanDariSheets(function() { renderDashboard(); }, 'gs-dash-status');
+    } else {
+      renderDashboard();
+    }
+  } else if (viewId === 'laporan') {
+    if (APPS_SCRIPT_URL) {
+      muatJawapanDariSheets(function() { renderLaporan(); }, 'gs-muat-status');
+    } else {
+      renderLaporan();
+    }
+  }
+}
+
+// =====================================================================
+// DASHBOARD
+// =====================================================================
+function renderDashboard() {
+  const total   = stafList.length;
+  const cariJawapan = s => jawapanList.find(
+    j => j.staffId === s.id || j.namastaf.toLowerCase() === s.nama.toLowerCase()
+  );
+  const selesai = stafList.filter(s => cariJawapan(s)).length;
+  const belum   = total - selesai;
+  const pct     = total > 0 ? Math.round((selesai / total) * 100) : 0;
+
+  document.getElementById('stat-total').textContent   = total;
+  document.getElementById('stat-selesai').textContent = selesai;
+  document.getElementById('stat-belum').textContent   = belum;
+  document.getElementById('stat-pct').textContent     = pct + '%';
+  document.getElementById('dash-pct-label').textContent   = pct + '%';
+  document.getElementById('dash-progress-fill').style.width = pct + '%';
+  document.getElementById('dash-prog-done').textContent   = selesai + ' selesai';
+  document.getElementById('dash-prog-total').textContent  = total + ' staf';
+
+  const grid = document.getElementById('staff-grid');
+  if (total === 0) {
+    grid.innerHTML = '<div class="empty-state"><div class="ei">👥</div><p>Tiada staf didaftarkan. Pergi ke tab <b>Urus Staf</b> untuk tambah.</p></div>';
+    return;
+  }
+  grid.innerHTML = stafList.map(s => {
+    const j = cariJawapan(s);
+    const initial = s.nama.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+    if (j) {
+      const dt = new Date(j.masa);
+      const dtStr = isNaN(dt) ? j.masa : dt.toLocaleString('ms-MY', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+      return `<div class="staff-card selesai">
+<div class="avatar">${initial}</div>
+<div class="staff-nama">${s.nama}</div>
+<span class="status-badge badge-selesai">✅ Selesai</span>
+<div class="staff-masa">${dtStr}</div>
+</div>`;
+    } else {
+      return `<div class="staff-card belum">
+<div class="avatar">${initial}</div>
+<div class="staff-nama">${s.nama}</div>
+<span class="status-badge badge-belum">⏳ Belum Jawab</span>
+</div>`;
+    }
+  }).join('');
+}
+
+// =====================================================================
+// URUS STAF
+// =====================================================================
+function renderStafTable() {
+  const tbody  = document.getElementById('staf-tbody');
+  const noData = document.getElementById('staf-no-data');
+  if (stafList.length === 0) { tbody.innerHTML = ''; noData.style.display = 'block'; return; }
+  noData.style.display = 'none';
+  tbody.innerHTML = stafList.map((s, i) => {
+    // Semak berdasarkan staffId ATAU nama (supaya tepat walaupun lepas reset)
+    const dah = jawapanList.find(
+      j => j.staffId === s.id || j.namastaf.toLowerCase() === s.nama.toLowerCase()
+    );
+    const statusHtml = dah
+      ? '<span class="status-badge badge-selesai">✅ Selesai</span>'
+      : '<span class="status-badge badge-belum">⏳ Belum</span>';
+    const resetBtn = dah
+      ? `<button class="btn" style="background:#fef3c7;color:#92400e;border:1px solid #fde68a;font-size:12px;padding:5px 12px;" onclick="resetJawapanStaf('${s.id}','${s.nama.replace(/'/g,"\\'")}')">🔄 Jawab Semula</button>`
+      : '';
+    return `<tr>
+<td>${i+1}</td>
+<td><strong>${s.nama}</strong></td>
+<td>${statusHtml}</td>
+<td style="display:flex;gap:6px;flex-wrap:wrap;">${resetBtn}<button class="btn btn-danger" onclick="deleteStaf('${s.id}')">🗑️ Padam</button></td>
+</tr>`;
+  }).join('');
+}
+
+function resetJawapanStaf(id, nama) {
+  if (!confirm('Benarkan "' + nama + '" jawab kuiz semula? Markah lama akan dipadam.')) return;
+  // Padam berdasarkan staffId DAN nama
+  jawapanList = jawapanList.filter(
+    j => j.staffId !== id && j.namastaf.toLowerCase() !== nama.toLowerCase()
+  );
+  saveJawapan();
+  renderStafTable();
+  renderDashboard();
+}
+
+function addStaf() {
+  const nama  = document.getElementById('input-nama').value.trim();
+  const alertEl = document.getElementById('staf-alert');
+  if (!nama) { alertEl.textContent = 'Sila isi nama.'; alertEl.classList.add('show'); return; }
+  if (stafList.find(s => s.nama.toLowerCase() === nama.toLowerCase())) {
+    alertEl.textContent = '"' + nama + '" sudah ada dalam senarai.'; alertEl.classList.add('show'); return;
+  }
+  alertEl.classList.remove('show');
+  stafList.push({ id: 's' + Date.now(), nama });
+  saveStaf();
+  document.getElementById('input-nama').value = '';
+  renderStafTable();
+  renderDashboard();
+}
+
+function uploadSenarai() {
+  const raw     = document.getElementById('input-senarai').value;
+  const alertEl = document.getElementById('staf-alert');
+  const lines   = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  if (lines.length === 0) { alertEl.textContent = 'Kotak senarai kosong. Tampal nama dulu.'; alertEl.classList.add('show'); return; }
+  let tambah = 0, langkau = 0;
+  lines.forEach(nama => {
+    if (stafList.find(s => s.nama.toLowerCase() === nama.toLowerCase())) { langkau++; }
+    else { stafList.push({ id: 's' + Date.now() + Math.random(), nama }); tambah++; }
+  });
+  saveStaf();
+  document.getElementById('input-senarai').value = '';
+  alertEl.classList.remove('show');
+  renderStafTable();
+  renderDashboard();
+  const msg = tambah + ' nama berjaya ditambah' + (langkau > 0 ? ', ' + langkau + ' dilangkau (sudah ada).' : '.');
+  alertEl.textContent = '✅ ' + msg;
+  alertEl.style.background = 'var(--success-bg)';
+  alertEl.style.color = 'var(--success)';
+  alertEl.style.border = '1px solid var(--success-border)';
+  alertEl.classList.add('show');
+  setTimeout(() => { alertEl.classList.remove('show'); alertEl.style = ''; }, 4000);
+}
+
+function resetSenaraiInput() {
+  document.getElementById('input-senarai').value = '';
+  document.getElementById('input-senarai').focus();
+}
+
+function deleteStaf(id) {
+  if (!confirm('Padam staf ini? Rekod kuiz beliau juga akan dipadam.')) return;
+  stafList    = stafList.filter(s => s.id !== id);
+  jawapanList = jawapanList.filter(j => j.staffId !== id);
+  saveStaf(); saveJawapan();
+  renderStafTable();
+  renderDashboard();
+}
+
+// =====================================================================
+// KUIZ — START
+// =====================================================================
+function renderKuizStart() {
+  const sel = document.getElementById('kuiz-nama-select');
+  sel.innerHTML = '<option value="">— Pilih Nama Anda —</option>';
+  stafList.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.id; opt.textContent = s.nama;
+    sel.appendChild(opt);
+  });
+  document.getElementById('kuiz-start-panel').style.display = 'block';
+  document.getElementById('quiz-container').style.display   = 'none';
+  document.getElementById('summary-screen').style.display   = 'none';
+  document.getElementById('kuiz-already').style.display     = 'none';
+  document.getElementById('kuiz-alert').classList.remove('show');
+}
+
+function semakStaf() {
+  const id   = document.getElementById('kuiz-nama-select').value;
+  const msg  = document.getElementById('kuiz-already');
+  const staf = stafList.find(s => s.id === id);
+  // Semak berdasarkan nama DAN staffId — elak masalah lepas reset senarai
+  const sudahJawab = id && staf && jawapanList.find(
+    j => j.staffId === id || j.namastaf.toLowerCase() === staf.nama.toLowerCase()
+  );
+  msg.style.display = sudahJawab ? 'block' : 'none';
+}
+
+function mulaKuiz() {
+  const id      = document.getElementById('kuiz-nama-select').value;
+  const alertEl = document.getElementById('kuiz-alert');
+  if (!id) { alertEl.classList.add('show'); return; }
+  alertEl.classList.remove('show');
+  const staf = stafList.find(s => s.id === id);
+  // Semak berdasarkan nama DAN staffId
+  const sudahJawab = jawapanList.find(
+    j => j.staffId === id || j.namastaf.toLowerCase() === staf.nama.toLowerCase()
+  );
+  if (sudahJawab) {
+    document.getElementById('kuiz-already').style.display = 'block'; return;
+  }
+  quizState = { staffId: id, staffNama: staf.nama, currentQ: 0, sesi: [] };
+  document.getElementById('kuiz-start-panel').style.display = 'none';
+  document.getElementById('quiz-container').style.display   = 'block';
+  document.getElementById('summary-screen').style.display   = 'none';
+  document.getElementById('quiz-staff-label').textContent   = '👤 ' + staf.nama;
+  paparSoalan(0);
+}
+
+// =====================================================================
+// KUIZ — QUESTION DISPLAY & TIMER
+// =====================================================================
+function paparSoalan(idx) {
+  stopTimer();
+  quizState.currentQ = idx;
+  const soalan = SOALAN[idx];
+  const total  = SOALAN.length;
+  const pct    = Math.round(((idx + 1) / total) * 100);
+
+  document.getElementById('quiz-progress-label').textContent = `Soalan ${idx+1} / ${total}`;
+  document.getElementById('quiz-progress-fill').style.width  = pct + '%';
+
+  let optionsHtml = '';
+  if (soalan.jenis === 'mcq') {
+    optionsHtml = `<div class="options-list" id="options-list">` +
+      soalan.pilihan.map((p, i) =>
+        `<label class="option-label" id="opt-${i}" onclick="pilihJawapan(${i},this)">
+<input type="radio" name="q${idx}" value="${i}"> ${String.fromCharCode(65+i)}) ${p}
+        </label>`
+      ).join('') + `</div>`;
+  } else {
+    optionsHtml = `
+      <div class="likert-labels-row"><span>Sangat Tidak Setuju</span><span>Sangat Setuju</span></div>
+      <div class="likert-scale" id="options-list">
+        ${[1,2,3,4,5].map(n =>
+          `<div class="likert-option">
+<button class="likert-btn" id="lk-${n}" onclick="pilihLikert(${n},this)">${n}</button>
+<span class="likert-label">${LIKERT_LABELS[n-1]}</span>
+</div>`
+        ).join('')}
+      </div>`;
+  }
+
+  document.getElementById('question-card').innerHTML = `
+    <span class="question-type-badge ${soalan.jenis === 'mcq' ? 'badge-mcq' : 'badge-likert'}">
+      ${soalan.jenis === 'mcq' ? '📌 MCQ' : '📊 Skala Persetujuan'}
+    </span>
+    <div class="question-text">${soalan.id}. ${soalan.teks}</div>
+    <div class="timer-wrap">
+      <div class="timer-bar-outer"><div class="timer-bar-inner" id="timer-bar" style="width:100%"></div></div>
+      <div class="timer-count" id="timer-count">${soalan.masa}</div>
+    </div>
+    ${optionsHtml}
+    <div class="question-actions">
+      <button class="btn btn-primary" id="btn-seterusnya" onclick="soalanSeterusnya()" disabled>
+        ${idx === total-1 ? '🏁 Semak Jawapan' : 'Seterusnya ➜'}
+      </button>
+    </div>`;
+
+  startTimer(soalan.masa);
+}
+
+function startTimer(detik) {
+  let baki = detik;
+  const bar   = () => document.getElementById('timer-bar');
+  const count = () => document.getElementById('timer-count');
+  function tick() {
+    const b = bar(); const c = count();
+    if (!b || !c) { stopTimer(); return; }
+    b.style.width = ((baki / detik) * 100) + '%';
+    c.textContent = baki;
+    if (baki <= 5) { b.classList.add('danger'); c.classList.add('danger'); }
+    if (baki <= 0) {
+      stopTimer();
+      if (!quizState.sesi.find(j => j.soalanId === SOALAN[quizState.currentQ].id)) {
+        quizState.sesi.push({ soalanId: SOALAN[quizState.currentQ].id, pilihan: null });
+      }
+      const btn = document.getElementById('btn-seterusnya');
+      if (btn) { btn.disabled = false; btn.click(); }
+      return;
+    }
+    baki--;
+  }
+  tick();
+  timerInterval = setInterval(tick, 1000);
+}
+
+function stopTimer() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+}
+
+function pilihJawapan(idx, el) {
+  document.querySelectorAll('.option-label').forEach(l => l.classList.remove('selected'));
+  el.classList.add('selected');
+  const soalan = SOALAN[quizState.currentQ];
+  const existing = quizState.sesi.findIndex(j => j.soalanId === soalan.id);
+  if (existing >= 0) quizState.sesi[existing].pilihan = idx;
+  else quizState.sesi.push({ soalanId: soalan.id, pilihan: idx });
+  document.getElementById('btn-seterusnya').disabled = false;
+}
+
+function pilihLikert(val, el) {
+  document.querySelectorAll('.likert-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  const soalan = SOALAN[quizState.currentQ];
+  const existing = quizState.sesi.findIndex(j => j.soalanId === soalan.id);
+  if (existing >= 0) quizState.sesi[existing].pilihan = val;
+  else quizState.sesi.push({ soalanId: soalan.id, pilihan: val });
+  document.getElementById('btn-seterusnya').disabled = false;
+}
+
+function soalanSeterusnya() {
+  stopTimer();
+  const soalan = SOALAN[quizState.currentQ];
+  if (!quizState.sesi.find(j => j.soalanId === soalan.id)) {
+    quizState.sesi.push({ soalanId: soalan.id, pilihan: null });
+  }
+  const next = quizState.currentQ + 1;
+  if (next < SOALAN.length) paparSoalan(next);
+  else paparSummary();
+}
+
+// =====================================================================
+// KUIZ — SUMMARY & SUBMIT
+// =====================================================================
+function paparSummary() {
+  stopTimer();
+  document.getElementById('quiz-container').style.display = 'none';
+  document.getElementById('summary-screen').style.display = 'block';
+
+  let skor = 0;
+  SOALAN.forEach(s => {
+    if (s.jenis === 'mcq') {
+      const j = quizState.sesi.find(j => j.soalanId === s.id);
+      if (j && j.pilihan === s.betul) skor++;
+    }
+  });
+
+  document.getElementById('summary-staff-name').textContent = 'Tahniah, ' + quizState.staffNama + '!';
+  document.getElementById('summary-score').textContent      = skor;
+
+  const tbody = document.getElementById('likert-summary-body');
+  tbody.innerHTML = SOALAN.filter(s => s.jenis === 'likert').map(s => {
+    const j   = quizState.sesi.find(j => j.soalanId === s.id);
+    const val   = j && j.pilihan !== null ? j.pilihan : '—';
+    const label = j && j.pilihan !== null ? LIKERT_LABELS[j.pilihan - 1] : 'Tiada jawapan';
+    return `<tr><td>${s.id}</td><td style="font-size:12px;line-height:1.4">${s.teks}</td><td><strong>${val}</strong> — ${label}</td></tr>`;
+  }).join('');
+
+  quizState.skorMCQ = skor;
+}
+
+function hantarKuiz() {
+  const rekod = {
+    staffId:  quizState.staffId,
+    namastaf: quizState.staffNama,
+    masa:     new Date().toISOString(),
+    skor:     quizState.skorMCQ,
+    selesai:  true,
+    jawapan:  quizState.sesi,
+  };
+  jawapanList.push(rekod);
+  saveJawapan();
+  // Hantar ke Google Sheets secara latar belakang
+  hantarKeSheets(rekod).then(() => {}).catch(() => {});
+  loadStaf();
+  loadJawapan();
+  renderDashboard();
+  alert('✅ Keputusan berjaya disimpan! Markah MCQ: ' + quizState.skorMCQ + ' / 12');
+  showView('dashboard');
+}
+
+// =====================================================================
+// PIN / ADMIN GATE
+// =====================================================================
+const ADMIN_PIN = '195066';
+let adminUnlocked = false;
+let _pinTarget = 'laporan';
+
+function bukaAdmin(targetView) {
+  if (adminUnlocked) { showView(targetView); return; }
+  _pinTarget = targetView;
+  document.getElementById('pin-input').value = '';
+  document.getElementById('pin-error').textContent = '';
+  document.getElementById('pin-overlay').style.display = 'flex';
+  setTimeout(() => document.getElementById('pin-input').focus(), 50);
+}
+
+function sahkanPin() {
+  const pin = document.getElementById('pin-input').value;
+  if (pin === ADMIN_PIN) {
+    adminUnlocked = true;
+    document.getElementById('pin-overlay').style.display = 'none';
+    document.getElementById('tab-laporan').textContent = '📋 Laporan Markah';
+    document.getElementById('tab-staf').textContent    = '⚙️ Urus Staf';
+    showView(_pinTarget);
+  } else {
+    document.getElementById('pin-error').textContent = '❌ PIN salah. Cuba semula.';
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-input').focus();
+  }
+}
+
+function tutupPin() {
+  document.getElementById('pin-overlay').style.display = 'none';
+  document.getElementById('pin-input').value = '';
+  document.getElementById('pin-error').textContent = '';
+}
+
+// =====================================================================
+// LAPORAN MARKAH
+// =====================================================================
+function getGred(skor) {
+  if (skor >= 10) return { gred:'A', cls:'gred-a' };
+  if (skor >= 7)  return { gred:'B', cls:'gred-b' };
+  if (skor >= 4)  return { gred:'C', cls:'gred-c' };
+  return { gred:'D', cls:'gred-d' };
+}
+
+function muatSemulaDariSheets() {
+  if (!APPS_SCRIPT_URL) {
+    const st = document.getElementById('gs-muat-status');
+    st.textContent = '⚠️ URL Apps Script belum diset. Pergi ke tab Urus Staf untuk setup.';
+    st.className = 'sync-status err show';
+    setTimeout(() => { st.className = 'sync-status'; }, 5000);
+    return;
+  }
+  muatJawapanDariSheets(function(ok) {
+    if (ok) {
+      renderDashboard();
+      renderLaporan();
+    }
+  }, 'gs-muat-status');
+}
+
+function renderLaporan() {
+  const tbody  = document.getElementById('laporan-tbody');
+  const noData = document.getElementById('laporan-no-data');
+  const meta   = document.getElementById('laporan-meta');
+
+  // Staf dari senarai yang sudah jawab
+  const answeredFromList = stafList.filter(s => jawapanList.find(j => j.staffId === s.id));
+  // Jawapan dari Sheets yang staffId-nya TIDAK ada dalam stafList (peserta dari komputer lain)
+  const extraJawapan = jawapanList.filter(j => !stafList.find(s => s.id === j.staffId));
+  const unanswered   = stafList.filter(s => !jawapanList.find(j => j.staffId === s.id));
+
+  const totalJawab = answeredFromList.length + extraJawapan.length;
+  meta.textContent = `${totalJawab} daripada ${stafList.length + extraJawapan.length} staf telah menjawab · Markah berasaskan 12 soalan MCQ`;
+
+  if (totalJawab === 0 && unanswered.length === 0 && extraJawapan.length === 0) {
+    tbody.innerHTML = '';
+    noData.style.display = 'block';
+    return;
+  }
+  noData.style.display = 'none';
+
+  function buatBaris(nama, j, i) {
+    const pct   = Math.round((j.skor / 12) * 100);
+    const g     = getGred(j.skor);
+    const dt    = new Date(j.masa);
+    const dtStr = isNaN(dt) ? j.masa : dt.toLocaleString('ms-MY', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    return `<tr>
+<td>${i+1}</td>
+<td><strong>${nama}</strong></td>
+<td><span class="laporan-markah">${j.skor}</span> <span class="laporan-pct">/ 12</span></td>
+<td><strong>${pct}%</strong></td>
+<td><span class="gred-badge ${g.cls}">${g.gred}</span></td>
+<td style="font-size:12px;color:var(--text-muted)">${dtStr}</td>
+<td><span class="status-badge badge-selesai">✅ Selesai</span></td>
+</tr>`;
+  }
+
+  let rows = answeredFromList.map((s, i) => {
+    const j = jawapanList.find(j => j.staffId === s.id);
+    return buatBaris(s.nama, j, i);
+  }).join('');
+
+  // Tambah rekod dari Sheets yang tak ada dalam senarai staf tempatan
+  rows += extraJawapan.map((j, i) =>
+    buatBaris(j.namastaf || j.staffId, j, answeredFromList.length + i)
+  ).join('');
+
+  rows += unanswered.map((s, i) =>
+    `<tr style="opacity:0.55">
+<td>${totalJawab + i + 1}</td>
+<td><strong>${s.nama}</strong></td>
+<td colspan="4" style="color:var(--text-muted);font-style:italic">Belum menjawab kuiz</td>
+<td><span class="status-badge badge-belum">⏳ Belum</span></td>
+</tr>`
+  ).join('');
+
+  tbody.innerHTML = rows;
+}
+
+function cetakLaporan() {
+  document.getElementById('print-date').textContent =
+    new Date().toLocaleString('ms-MY', { day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  window.print();
+}
+
+// =====================================================================
+// INIT
+// =====================================================================
+function resetKeAsal() {
+  if (!confirm('Ini akan PADAM semua data semasa (senarai staf & semua jawapan) dan muatkan semula senarai asal. Teruskan?')) return;
+  localStorage.removeItem('tatakelola_staf');
+  localStorage.removeItem('tatakelola_jawapan');
+  location.reload();
+}
+
+function init() {
+  document.getElementById('year-badge').textContent = new Date().getFullYear();
+  loadStaf();
+  loadJawapan();
+  if (!stafList || stafList.length === 0) {
+    stafList = JSON.parse(JSON.stringify(SAMPLE_STAF));
+    saveStaf();
+  }
+  // Papar URL sedia ada dalam input jika sudah pernah disimpan
+  if (APPS_SCRIPT_URL) {
+    const inp = document.getElementById('gs-url-input');
+    if (inp) inp.value = APPS_SCRIPT_URL;
+  }
+  renderDashboard();
+}
+
+init();
+</script>
+</body>
+</html>
