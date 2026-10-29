@@ -512,218 +512,241 @@
 </style>
 </head>
 <body>
-
 <!-- HEADER -->
 <header>
-  <div class="header-left">
-    <span class="header-inst">Kolej Komuniti Jempol, Negeri Sembilan</span>
-    <span class="header-title">🏛️ Kuiz Tatakelola &amp; Integriti</span>
-    <span class="header-subtitle">Sistem Penilaian Pengetahuan Integriti Staf</span>
-  </div>
-  <span class="header-badge" id="year-badge">2025</span>
+<div class="header-left">
+<span class="header-inst">Kolej Komuniti Jempol, Negeri Sembilan</span>
+<span class="header-title">🏛️ Kuiz Tatakelola &amp; Integriti</span>
+<span class="header-subtitle">Sistem Penilaian Pengetahuan Integriti Staf</span>
+</div>
+<span class="header-badge" id="year-badge">2025</span>
 </header>
-
 <!-- TAB BAR -->
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="showView('dashboard')" data-view="dashboard">📊 Dashboard</button>
-  <button class="tab-btn" onclick="showView('kuiz')" data-view="kuiz">📝 Mula Kuiz</button>
-  <button class="tab-btn" onclick="bukaAdmin('staf')" data-view="staf" id="tab-staf">🔒 Urus Staf</button>
-  <button class="tab-btn" onclick="bukaAdmin('laporan')" data-view="laporan" id="tab-laporan">🔒 Laporan Markah</button>
+<button class="tab-btn active" onclick="showView('dashboard')" data-view="dashboard">📊 Dashboard</button>
+<button class="tab-btn" onclick="showView('kuiz')" data-view="kuiz">📝 Mula Kuiz</button>
+<button class="tab-btn" onclick="bukaAdmin('staf')" data-view="staf" id="tab-staf">🔒 Urus Staf</button>
+<button class="tab-btn" onclick="bukaAdmin('laporan')" data-view="laporan" id="tab-laporan">🔒 Laporan Markah</button>
 </div>
-
 <!-- MAIN -->
 <main>
-
-  <!-- ===== DASHBOARD ===== -->
-  <div id="view-dashboard" class="view active">
-    <div class="section-title">📊 Dashboard Penjejakan Kuiz</div>
-    <div class="summary-bar" id="summary-bar">
-      <div class="stat-box"><span class="stat-label">Jumlah Staf</span><span class="stat-value" id="stat-total">0</span><span class="stat-sub">didaftarkan</span></div>
-      <div class="stat-box"><span class="stat-label">Sudah Jawab</span><span class="stat-value" id="stat-selesai" style="color:var(--success)">0</span><span class="stat-sub">staf</span></div>
-      <div class="stat-box"><span class="stat-label">Belum Jawab</span><span class="stat-value" id="stat-belum" style="color:var(--gold)">0</span><span class="stat-sub">staf</span></div>
-      <div class="stat-box"><span class="stat-label">% Siap</span><span class="stat-value" id="stat-pct">0%</span><span class="stat-sub">pencapaian keseluruhan</span></div>
-    </div>
-    <!-- Progress bar keseluruhan -->
-    <div style="background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 24px;margin-bottom:24px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <span style="font-size:14px;font-weight:600;color:var(--navy);">Kemajuan Keseluruhan</span>
-        <span style="font-size:15px;font-weight:800;color:var(--navy);" id="dash-pct-label">0%</span>
-      </div>
-      <div style="height:14px;background:var(--bg2);border-radius:7px;overflow:hidden;">
-        <div id="dash-progress-fill" style="height:100%;width:0%;background:linear-gradient(to right,#1e3a5f,#3b6ab0);border-radius:7px;transition:width 0.6s ease;"></div>
-      </div>
-      <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--text-muted);">
-        <span id="dash-prog-done">0 selesai</span>
-        <span id="dash-prog-total">0 staf</span>
-      </div>
-    </div>
-    <div class="staff-grid" id="staff-grid"></div>
-  </div>
-
-  <!-- ===== MULA KUIZ ===== -->
-  <div id="view-kuiz" class="view">
-    <div class="section-title">📝 Mula Kuiz Integriti</div>
-
-    <!-- Start Panel -->
-    <div id="kuiz-start-panel" class="kuiz-start-panel">
-      <div class="kuiz-icon">📋</div>
-      <div class="kuiz-start-title">Kuiz Tatakelola &amp; Integriti</div>
-      <div class="kuiz-start-sub">20 soalan · Campuran MCQ &amp; Skala Persetujuan · Setiap soalan ada masa terhad</div>
-      <div class="alert alert-error" id="kuiz-alert">Sila pilih nama anda terlebih dahulu.</div>
-      <div class="kuiz-already-msg" id="kuiz-already">⚠️ Anda sudah menjawab kuiz ini. Hubungi admin jika perlu ulang.</div>
-      <select class="kuiz-select" id="kuiz-nama-select" onchange="semakStaf()">
-        <option value="">— Pilih Nama Anda —</option>
-      </select>
-      <br>
-      <button class="btn btn-gold" onclick="mulaKuiz()" style="width:100%;justify-content:center;font-size:15px;padding:13px;">🚀 Mula Kuiz</button>
-    </div>
-
-    <!-- Quiz Container -->
-    <div id="quiz-container">
-      <div class="quiz-header">
-        <div>
-          <div class="quiz-progress-label" id="quiz-progress-label">Soalan 1 / 20</div>
-          <div class="quiz-staff-label" id="quiz-staff-label"></div>
-        </div>
-        <div class="quiz-progress-bar-wrap">
-          <div class="quiz-progress-fill" id="quiz-progress-fill" style="width:5%"></div>
-        </div>
-      </div>
-      <div class="question-card" id="question-card">
-        <!-- rendered by JS -->
-      </div>
-    </div>
-
-    <!-- Summary Screen -->
-    <div id="summary-screen">
-      <div class="summary-card">
-        <div class="summary-icon">🎉</div>
-        <div class="summary-title">Kuiz Selesai!</div>
-        <div class="summary-sub" id="summary-staff-name">Tahniah kerana menyiapkan kuiz.</div>
-        <div class="score-display">
-          <span class="score-num" id="summary-score">0</span>
-          <span class="score-out">markah daripada 12 (MCQ)</span>
-        </div>
-        <table class="likert-summary-table" id="likert-summary-table">
-          <thead><tr><th>#</th><th>Pernyataan</th><th>Skor</th></tr></thead>
-          <tbody id="likert-summary-body"></tbody>
-        </table>
-        <button class="btn btn-primary" onclick="hantarKuiz()" style="width:100%;justify-content:center;font-size:15px;padding:13px;">✅ Hantar &amp; Simpan Keputusan</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== URUS STAF ===== -->
-  <div id="view-staf" class="view">
-    <div class="section-title">⚙️ Urus Senarai Staf</div>
-
-    <!-- Upload senarai -->
-    <div class="staf-form-card">
-      <div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;">📤 Upload Senarai Nama</div>
-      <div style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">
+<!-- ===== DASHBOARD ===== -->
+<div id="view-dashboard" class="view active">
+<div class="section-title">📊 Dashboard Penjejakan Kuiz</div>
+<div class="summary-bar" id="summary-bar">
+<div class="stat-box">
+<span class="stat-label">Jumlah Staf</span>
+<span class="stat-value" id="stat-total">0</span>
+<span class="stat-sub">didaftarkan</span>
+</div>
+<div class="stat-box">
+<span class="stat-label">Sudah Jawab</span>
+<span class="stat-value" id="stat-selesai" style="color:var(--success)">0</span>
+<span class="stat-sub">staf</span>
+</div>
+<div class="stat-box">
+<span class="stat-label">Belum Jawab</span>
+<span class="stat-value" id="stat-belum" style="color:var(--gold)">0</span>
+<span class="stat-sub">staf</span>
+</div>
+<div class="stat-box">
+<span class="stat-label">% Siap</span>
+<span class="stat-value" id="stat-pct">0%</span>
+<span class="stat-sub">pencapaian keseluruhan</span>
+</div>
+</div>
+<!-- Progress bar keseluruhan -->
+<div style="background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 24px;margin-bottom:24px;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+<span style="font-size:14px;font-weight:600;color:var(--navy);">Kemajuan Keseluruhan</span>
+<span style="font-size:15px;font-weight:800;color:var(--navy);" id="dash-pct-label">0%</span>
+</div>
+<div style="height:14px;background:var(--bg2);border-radius:7px;overflow:hidden;">
+<div id="dash-progress-fill" style="height:100%;width:0%;background:linear-gradient(to right,#1e3a5f,#3b6ab0);border-radius:7px;transition:width 0.6s ease;">
+</div>
+</div>
+<div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--text-muted);">
+<span id="dash-prog-done">0 selesai</span>
+<span id="dash-prog-total">0 staf</span>
+</div>
+</div>
+<div class="staff-grid" id="staff-grid">
+</div>
+</div>
+<!-- ===== MULA KUIZ ===== -->
+<div id="view-kuiz" class="view">
+<div class="section-title">📝 Mula Kuiz Integriti</div>
+<!-- Start Panel -->
+<div id="kuiz-start-panel" class="kuiz-start-panel">
+<div class="kuiz-icon">📋</div>
+<div class="kuiz-start-title">Kuiz Tatakelola &amp; Integriti</div>
+<div class="kuiz-start-sub">20 soalan · Campuran MCQ &amp; Skala Persetujuan · Setiap soalan ada masa terhad</div>
+<div class="alert alert-error" id="kuiz-alert">Sila pilih nama anda terlebih dahulu.</div>
+<div class="kuiz-already-msg" id="kuiz-already">⚠️ Anda sudah menjawab kuiz ini. Hubungi admin jika perlu ulang.</div>
+<select class="kuiz-select" id="kuiz-nama-select" onchange="semakStaf()">
+<option value="">— Pilih Nama Anda —</option>
+</select>
+<br>
+<button class="btn btn-gold" onclick="mulaKuiz()" style="width:100%;justify-content:center;font-size:15px;padding:13px;">🚀 Mula Kuiz</button>
+</div>
+<!-- Quiz Container -->
+<div id="quiz-container">
+<div class="quiz-header">
+<div>
+<div class="quiz-progress-label" id="quiz-progress-label">Soalan 1 / 20</div>
+<div class="quiz-staff-label" id="quiz-staff-label">
+</div>
+</div>
+<div class="quiz-progress-bar-wrap">
+<div class="quiz-progress-fill" id="quiz-progress-fill" style="width:5%">
+</div>
+</div>
+</div>
+<div class="question-card" id="question-card">
+<!-- rendered by JS -->
+</div>
+</div>
+<!-- Summary Screen -->
+<div id="summary-screen">
+<div class="summary-card">
+<div class="summary-icon">🎉</div>
+<div class="summary-title">Kuiz Selesai!</div>
+<div class="summary-sub" id="summary-staff-name">Tahniah kerana menyiapkan kuiz.</div>
+<div class="score-display">
+<span class="score-num" id="summary-score">0</span>
+<span class="score-out">markah daripada 12 (MCQ)</span>
+</div>
+<table class="likert-summary-table" id="likert-summary-table">
+<thead>
+<tr>
+<th>#</th>
+<th>Pernyataan</th>
+<th>Skor</th>
+</tr>
+</thead>
+<tbody id="likert-summary-body">
+</tbody>
+</table>
+<button class="btn btn-primary" onclick="hantarKuiz()" style="width:100%;justify-content:center;font-size:15px;padding:13px;">✅ Hantar &amp; Simpan Keputusan</button>
+</div>
+</div>
+</div>
+<!-- ===== URUS STAF ===== -->
+<div id="view-staf" class="view">
+<div class="section-title">⚙️ Urus Senarai Staf</div>
+<!-- Upload senarai -->
+<div class="staf-form-card">
+<div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;">📤 Upload Senarai Nama</div>
+<div style="font-size:13px;color:var(--text-muted);margin-bottom:14px;">
         Tampal senarai nama — satu nama satu baris. Nama sedia ada tidak akan diganda.
       </div>
-      <div class="alert alert-error" id="staf-alert"></div>
-      <textarea id="input-senarai" rows="8"
+<div class="alert alert-error" id="staf-alert">
+</div>
+<textarea id="input-senarai" rows="8"
         style="width:100%;padding:10px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-family:inherit;font-size:14px;resize:vertical;outline:none;color:var(--text);line-height:1.7;"
-        placeholder="Ahmad bin Ali&#10;Siti binti Hamid&#10;Razif bin Zulkifli&#10;..."></textarea>
-      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
-        <button class="btn btn-primary" onclick="uploadSenarai()">📥 Muatkan Senarai</button>
-        <button class="btn" style="background:var(--bg2);color:var(--text);" onclick="resetSenaraiInput()">🗑️ Kosongkan Kotak</button>
-      </div>
-    </div>
-
-    <!-- Tambah satu nama -->
-    <div class="staf-form-card" style="margin-top:0;">
-      <div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:14px;">➕ Tambah Nama Satu-Satu</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="input-nama">Nama Penuh</label>
-          <input type="text" id="input-nama" placeholder="cth: Ahmad bin Ali"
+        placeholder="Ahmad bin Ali&#10;Siti binti Hamid&#10;Razif bin Zulkifli&#10;...">
+</textarea>
+<div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+<button class="btn btn-primary" onclick="uploadSenarai()">📥 Muatkan Senarai</button>
+<button class="btn" style="background:var(--bg2);color:var(--text);" onclick="resetSenaraiInput()">🗑️ Kosongkan Kotak</button>
+</div>
+</div>
+<!-- Tambah satu nama -->
+<div class="staf-form-card" style="margin-top:0;">
+<div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:14px;">➕ Tambah Nama Satu-Satu</div>
+<div class="form-row">
+<div class="form-group">
+<label for="input-nama">Nama Penuh</label>
+<input type="text" id="input-nama" placeholder="cth: Ahmad bin Ali"
             onkeydown="if(event.key==='Enter')addStaf()">
-        </div>
-      </div>
-      <button class="btn btn-primary" onclick="addStaf()">➕ Tambah</button>
-    </div>
-
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
-      <span style="font-size:14px;font-weight:700;color:var(--navy);">Senarai Staf Berdaftar</span>
-      <button class="btn btn-danger" onclick="resetKeAsal()" style="font-size:12px;padding:7px 16px;">⚠️ Reset &amp; Muat Semula Senarai Asal</button>
-    </div>
-    <div class="staf-table-wrap">
-      <table class="staf-table">
-        <thead>
-          <tr><th>#</th><th>Nama</th><th>Status Kuiz</th><th>Tindakan</th></tr>
-        </thead>
-        <tbody id="staf-tbody"></tbody>
-      </table>
-      <div class="staf-no-data" id="staf-no-data" style="display:none;">Tiada staf didaftarkan.</div>
-    </div>
-  </div>
-
-  <!-- ===== LAPORAN MARKAH ===== -->
-  <div id="view-laporan" class="view">
-
-    <!-- Print header (hidden on screen, shown when printing) -->
-    <div class="print-header">
-      <h2>Laporan Markah Kuiz Tatakelola &amp; Integriti</h2>
-      <p>Kolej Komuniti Jempol, Negeri Sembilan &nbsp;|&nbsp; Dicetak: <span id="print-date"></span></p>
-    </div>
-
-    <div class="laporan-toolbar">
-      <div>
-        <div class="section-title" style="margin-bottom:4px;">📋 Laporan Markah Penilaian</div>
-        <div class="laporan-meta" id="laporan-meta">Markah berasaskan 12 soalan MCQ</div>
-      </div>
-      <button class="btn btn-primary" onclick="cetakLaporan()">🖨️ Cetak / Simpan PDF</button>
-    </div>
-
-    <!-- Gred legend -->
-    <div class="gred-legend">
-      <strong style="color:var(--navy);margin-right:4px;">Skala Gred:</strong>
-      <div class="gred-legend-item"><span class="gred-badge gred-a">A</span> 10–12 markah (83–100%)</div>
-      <div class="gred-legend-item"><span class="gred-badge gred-b">B</span> 7–9 markah (58–82%)</div>
-      <div class="gred-legend-item"><span class="gred-badge gred-c">C</span> 4–6 markah (33–57%)</div>
-      <div class="gred-legend-item"><span class="gred-badge gred-d">D</span> 0–3 markah (0–32%)</div>
-    </div>
-
-    <div class="laporan-table-wrap">
-      <table class="laporan-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Nama Staf</th>
-            <th>Markah MCQ</th>
-            <th>Peratus</th>
-            <th>Gred</th>
-            <th>Tarikh &amp; Masa</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="laporan-tbody"></tbody>
-      </table>
-      <div class="staf-no-data" id="laporan-no-data" style="display:none;">Tiada staf yang telah menjawab kuiz.</div>
-    </div>
-  </div>
-
+</div>
+</div>
+<button class="btn btn-primary" onclick="addStaf()">➕ Tambah</button>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
+<span style="font-size:14px;font-weight:700;color:var(--navy);">Senarai Staf Berdaftar</span>
+<button class="btn btn-danger" onclick="resetKeAsal()" style="font-size:12px;padding:7px 16px;">⚠️ Reset &amp; Muat Semula Senarai Asal</button>
+</div>
+<div class="staf-table-wrap">
+<table class="staf-table">
+<thead>
+<tr>
+<th>#</th>
+<th>Nama</th>
+<th>Status Kuiz</th>
+<th>Tindakan</th>
+</tr>
+</thead>
+<tbody id="staf-tbody">
+</tbody>
+</table>
+<div class="staf-no-data" id="staf-no-data" style="display:none;">Tiada staf didaftarkan.</div>
+</div>
+</div>
+<!-- ===== LAPORAN MARKAH ===== -->
+<div id="view-laporan" class="view">
+<!-- Print header (hidden on screen, shown when printing) -->
+<div class="print-header">
+<h2>Laporan Markah Kuiz Tatakelola &amp; Integriti</h2>
+<p>Kolej Komuniti Jempol, Negeri Sembilan &nbsp;|&nbsp; Dicetak: <span id="print-date">
+</span>
+</p>
+</div>
+<div class="laporan-toolbar">
+<div>
+<div class="section-title" style="margin-bottom:4px;">📋 Laporan Markah Penilaian</div>
+<div class="laporan-meta" id="laporan-meta">Markah berasaskan 12 soalan MCQ</div>
+</div>
+<button class="btn btn-primary" onclick="cetakLaporan()">🖨️ Cetak / Simpan PDF</button>
+</div>
+<!-- Gred legend -->
+<div class="gred-legend">
+<strong style="color:var(--navy);margin-right:4px;">Skala Gred:</strong>
+<div class="gred-legend-item">
+<span class="gred-badge gred-a">A</span> 10–12 markah (83–100%)</div>
+<div class="gred-legend-item">
+<span class="gred-badge gred-b">B</span> 7–9 markah (58–82%)</div>
+<div class="gred-legend-item">
+<span class="gred-badge gred-c">C</span> 4–6 markah (33–57%)</div>
+<div class="gred-legend-item">
+<span class="gred-badge gred-d">D</span> 0–3 markah (0–32%)</div>
+</div>
+<div class="laporan-table-wrap">
+<table class="laporan-table">
+<thead>
+<tr>
+<th>#</th>
+<th>Nama Staf</th>
+<th>Markah MCQ</th>
+<th>Peratus</th>
+<th>Gred</th>
+<th>Tarikh &amp; Masa</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody id="laporan-tbody">
+</tbody>
+</table>
+<div class="staf-no-data" id="laporan-no-data" style="display:none;">Tiada staf yang telah menjawab kuiz.</div>
+</div>
+</div>
 </main>
-
 <!-- PIN OVERLAY -->
 <div class="pin-overlay" id="pin-overlay" style="display:none;">
-  <div class="pin-box">
-    <div class="pin-icon">🔐</div>
-    <div class="pin-title">Akses Admin</div>
-    <div class="pin-sub">Masukkan PIN untuk lihat Laporan Markah</div>
-    <input class="pin-input" type="password" id="pin-input" maxlength="6" placeholder="••••••"
+<div class="pin-box">
+<div class="pin-icon">🔐</div>
+<div class="pin-title">Akses Admin</div>
+<div class="pin-sub">Masukkan PIN untuk lihat Laporan Markah</div>
+<input class="pin-input" type="password" id="pin-input" maxlength="6" placeholder="••••••"
       onkeydown="if(event.key==='Enter')sahkanPin()">
-    <div class="pin-error" id="pin-error"></div>
-    <div class="pin-btn-row">
-      <button class="btn btn-primary" onclick="sahkanPin()" style="flex:1;justify-content:center;">✅ Masuk</button>
-      <button class="btn" onclick="tutupPin()" style="flex:1;justify-content:center;background:var(--bg2);color:var(--text);">Batal</button>
-    </div>
-  </div>
+<div class="pin-error" id="pin-error">
 </div>
-
+<div class="pin-btn-row">
+<button class="btn btn-primary" onclick="sahkanPin()" style="flex:1;justify-content:center;">✅ Masuk</button>
+<button class="btn" onclick="tutupPin()" style="flex:1;justify-content:center;background:var(--bg2);color:var(--text);">Batal</button>
+</div>
+</div>
+</div>
 <script>
 // =====================================================================
 // DATA
@@ -896,17 +919,17 @@ function renderDashboard() {
       const dt = new Date(j.masa);
       const dtStr = dt.toLocaleString('ms-MY', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
       return `<div class="staff-card selesai">
-        <div class="avatar">${initial}</div>
-        <div class="staff-nama">${s.nama}</div>
-        <span class="status-badge badge-selesai">✅ Selesai</span>
-        <div class="staff-masa">${dtStr}</div>
-      </div>`;
+<div class="avatar">${initial}</div>
+<div class="staff-nama">${s.nama}</div>
+<span class="status-badge badge-selesai">✅ Selesai</span>
+<div class="staff-masa">${dtStr}</div>
+</div>`;
     } else {
       return `<div class="staff-card belum">
-        <div class="avatar">${initial}</div>
-        <div class="staff-nama">${s.nama}</div>
-        <span class="status-badge badge-belum">⏳ Belum Jawab</span>
-      </div>`;
+<div class="avatar">${initial}</div>
+<div class="staff-nama">${s.nama}</div>
+<span class="status-badge badge-belum">⏳ Belum Jawab</span>
+</div>`;
     }
   }).join('');
 }
@@ -925,11 +948,11 @@ function renderStafTable() {
       ? '<span class="status-badge badge-selesai">✅ Selesai</span>'
       : '<span class="status-badge badge-belum">⏳ Belum</span>';
     return `<tr>
-      <td>${i+1}</td>
-      <td><strong>${s.nama}</strong></td>
-      <td>${statusHtml}</td>
-      <td><button class="btn btn-danger" onclick="deleteStaf('${s.id}')">🗑️ Padam</button></td>
-    </tr>`;
+<td>${i+1}</td>
+<td><strong>${s.nama}</strong></td>
+<td>${statusHtml}</td>
+<td><button class="btn btn-danger" onclick="deleteStaf('${s.id}')">🗑️ Padam</button></td>
+</tr>`;
   }).join('');
 }
 
@@ -1060,20 +1083,21 @@ function paparSoalan(idx) {
     optionsHtml = `<div class="options-list" id="options-list">` +
       soalan.pilihan.map((p, i) =>
         `<label class="option-label" id="opt-${i}" onclick="pilihJawapan(${i},this)">
-          <input type="radio" name="q${idx}" value="${i}"> ${String.fromCharCode(65+i)}) ${p}
+<input type="radio" name="q${idx}" value="${i}"> ${String.fromCharCode(65+i)}) ${p}
         </label>`
       ).join('') + `</div>`;
   } else {
     optionsHtml = `
       <div class="likert-labels-row">
-        <span>Sangat Tidak Setuju</span><span>Sangat Setuju</span>
-      </div>
-      <div class="likert-scale" id="options-list">
+<span>Sangat Tidak Setuju</span>
+<span>Sangat Setuju</span>
+</div>
+<div class="likert-scale" id="options-list">
         ${[1,2,3,4,5].map(n =>
           `<div class="likert-option">
-            <button class="likert-btn" id="lk-${n}" onclick="pilihLikert(${n},this)">${n}</button>
-            <span class="likert-label">${LIKERT_LABELS[n-1]}</span>
-          </div>`
+<button class="likert-btn" id="lk-${n}" onclick="pilihLikert(${n},this)">${n}</button>
+<span class="likert-label">${LIKERT_LABELS[n-1]}</span>
+</div>`
         ).join('')}
       </div>`;
   }
@@ -1082,17 +1106,20 @@ function paparSoalan(idx) {
     <span class="question-type-badge ${soalan.jenis === 'mcq' ? 'badge-mcq' : 'badge-likert'}">
       ${soalan.jenis === 'mcq' ? '📌 MCQ' : '📊 Skala Persetujuan'}
     </span>
-    <div class="question-text">${soalan.id}. ${soalan.teks}</div>
-    <div class="timer-wrap">
-      <div class="timer-bar-outer"><div class="timer-bar-inner" id="timer-bar" style="width:100%"></div></div>
-      <div class="timer-count" id="timer-count">${soalan.masa}</div>
-    </div>
+<div class="question-text">${soalan.id}. ${soalan.teks}</div>
+<div class="timer-wrap">
+<div class="timer-bar-outer">
+<div class="timer-bar-inner" id="timer-bar" style="width:100%">
+</div>
+</div>
+<div class="timer-count" id="timer-count">${soalan.masa}</div>
+</div>
     ${optionsHtml}
     <div class="question-actions">
-      <button class="btn btn-primary" id="btn-seterusnya" onclick="soalanSeterusnya()" disabled>
+<button class="btn btn-primary" id="btn-seterusnya" onclick="soalanSeterusnya()" disabled>
         ${idx === total-1 ? '🏁 Semak Jawapan' : 'Seterusnya ➜'}
       </button>
-    </div>`;
+</div>`;
 
   startTimer(soalan.masa);
 }
@@ -1188,7 +1215,11 @@ function paparSummary() {
     const j  = quizState.sesi.find(j => j.soalanId === s.id);
     const val = j && j.pilihan !== null ? j.pilihan : '—';
     const label = j && j.pilihan !== null ? LIKERT_LABELS[j.pilihan - 1] : 'Tiada jawapan';
-    return `<tr><td>${s.id}</td><td style="font-size:12px;line-height:1.4">${s.teks}</td><td><strong>${val}</strong> — ${label}</td></tr>`;
+    return `<tr>
+<td>${s.id}</td>
+<td style="font-size:12px;line-height:1.4">${s.teks}</td>
+<td><strong>${val}</strong> — ${label}</td>
+</tr>`;
   }).join('');
 
   quizState.skorMCQ = skor;
@@ -1206,6 +1237,9 @@ function hantarKuiz() {
   };
   jawapanList.push(rekod);
   saveJawapan();
+  // Refresh staf list in memory so dashboard & laporan show updated status immediately
+  loadStaf();
+  loadJawapan();
   renderDashboard();
   alert('✅ Keputusan berjaya disimpan! Markah MCQ: ' + skor + ' / 12');
   showView('dashboard');
@@ -1267,12 +1301,12 @@ function renderLaporan() {
   const meta   = document.getElementById('laporan-meta');
 
   // All staf, answered first then unanswered
-  const answered  = stafList.filter(s => jawapanList.find(j => j.staffId === s.id));
+  const answered   = stafList.filter(s => jawapanList.find(j => j.staffId === s.id));
   const unanswered = stafList.filter(s => !jawapanList.find(j => j.staffId === s.id));
 
   meta.textContent = `${answered.length} daripada ${stafList.length} staf telah menjawab · Markah berasaskan 12 soalan MCQ`;
 
-  if (answered.length === 0) {
+  if (answered.length === 0 && unanswered.length === 0) {
     tbody.innerHTML = '';
     noData.style.display = 'block';
     return;
@@ -1286,23 +1320,23 @@ function renderLaporan() {
     const dt  = new Date(j.masa);
     const dtStr = dt.toLocaleString('ms-MY', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
     return `<tr>
-      <td>${i+1}</td>
-      <td><strong>${s.nama}</strong></td>
-      <td><span class="laporan-markah">${j.skor}</span> <span class="laporan-pct">/ 12</span></td>
-      <td><strong>${pct}%</strong></td>
-      <td><span class="gred-badge ${g.cls}">${g.gred}</span></td>
-      <td style="font-size:12px;color:var(--text-muted)">${dtStr}</td>
-      <td><span class="status-badge badge-selesai">✅ Selesai</span></td>
-    </tr>`;
+<td>${i+1}</td>
+<td><strong>${s.nama}</strong></td>
+<td><span class="laporan-markah">${j.skor}</span> <span class="laporan-pct">/ 12</span></td>
+<td><strong>${pct}%</strong></td>
+<td><span class="gred-badge ${g.cls}">${g.gred}</span></td>
+<td style="font-size:12px;color:var(--text-muted)">${dtStr}</td>
+<td><span class="status-badge badge-selesai">✅ Selesai</span></td>
+</tr>`;
   }).join('');
 
   // Append unanswered staf at bottom
   rows += unanswered.map((s, i) => `<tr style="opacity:0.55">
-    <td>${answered.length + i + 1}</td>
-    <td><strong>${s.nama}</strong></td>
-    <td colspan="4" style="color:var(--text-muted);font-style:italic">Belum menjawab kuiz</td>
-    <td><span class="status-badge badge-belum">⏳ Belum</span></td>
-  </tr>`).join('');
+<td>${answered.length + i + 1}</td>
+<td><strong>${s.nama}</strong></td>
+<td colspan="4" style="color:var(--text-muted);font-style:italic">Belum menjawab kuiz</td>
+<td><span class="status-badge badge-belum">⏳ Belum</span></td>
+</tr>`).join('');
 
   tbody.innerHTML = rows;
 }
