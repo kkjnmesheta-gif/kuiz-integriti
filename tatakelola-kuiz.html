@@ -717,8 +717,10 @@
     value="">
   <button class="btn btn-success" onclick="simpanGSUrl()">💾 Simpan URL</button>
   <button class="btn" style="background:var(--bg2);color:var(--text);" onclick="testGSUrl()">🧪 Test Sambungan</button>
+  <button class="btn" style="background:#7c3aed;color:#fff;" onclick="debugHantar()">🔬 Debug Hantar</button>
 </div>
 <div style="margin-top:8px;"><span class="sync-status" id="gs-url-status"></span></div>
+<div id="gs-debug-box" style="display:none;margin-top:12px;background:#1e293b;color:#e2e8f0;border-radius:8px;padding:14px;font-family:monospace;font-size:12px;line-height:1.8;white-space:pre-wrap;word-break:break-all;"></div>
 </div>
 
 <!-- Upload senarai -->
@@ -985,6 +987,79 @@ function testGSUrl() {
     .catch(e => {
       st.textContent = '❌ Gagal: ' + e.message;
       st.className = 'sync-status err show';
+    });
+}
+
+function debugHantar() {
+  const box = document.getElementById('gs-debug-box');
+  box.style.display = 'block';
+  box.textContent = '';
+
+  function log(msg) { box.textContent += msg + '\n'; }
+
+  log('=== DEBUG GOOGLE SHEETS ===');
+  log('URL tersimpan: ' + (APPS_SCRIPT_URL || '(KOSONG — URL belum disimpan!)'));
+
+  if (!APPS_SCRIPT_URL) {
+    log('\n❌ MASALAH: URL Apps Script tiada!');
+    log('→ Isi URL dalam kotak di atas dan klik Simpan URL.');
+    return;
+  }
+
+  // Test 1: sambungan asas
+  log('\n[1] Menguji sambungan...');
+  fetch(APPS_SCRIPT_URL + '?action=test')
+    .then(r => {
+      log('    HTTP status: ' + r.status);
+      return r.text();
+    })
+    .then(t => {
+      log('    Respons: ' + t);
+      try {
+        const d = JSON.parse(t);
+        if (d.ok) log('    ✅ Sambungan OK');
+        else log('    ❌ Respons tidak ok: ' + JSON.stringify(d));
+      } catch(e) {
+        log('    ❌ Bukan JSON — mungkin Apps Script belum deploy betul');
+      }
+
+      // Test 2: hantar rekod ujian
+      log('\n[2] Hantar rekod ujian...');
+      const params = new URLSearchParams({
+        action:   'tambahJawapan',
+        staffId:  'test-debug',
+        namastaf: 'TEST DEBUG',
+        masa:     new Date().toISOString(),
+        skor:     '99'
+      });
+      const urlTest = APPS_SCRIPT_URL + '?' + params.toString();
+      log('    URL: ' + urlTest.substring(0, 80) + '...');
+
+      return fetch(urlTest);
+    })
+    .then(r => {
+      log('    HTTP status: ' + r.status);
+      return r.text();
+    })
+    .then(t => {
+      log('    Respons: ' + t);
+      try {
+        const d = JSON.parse(t);
+        if (d.ok) {
+          log('    ✅ Rekod ujian berjaya masuk ke Sheets!');
+          log('\n→ Semak Google Sheets anda — patut ada row "TEST DEBUG"');
+        } else {
+          log('    ❌ Error dari Sheets: ' + JSON.stringify(d));
+        }
+      } catch(e) {
+        log('    ❌ Respons bukan JSON: ' + t.substring(0, 200));
+      }
+    })
+    .catch(e => {
+      log('    ❌ Network error: ' + e.message);
+      log('\n→ Kemungkinan CORS. Cuba buka URL ini terus dalam tab baru:');
+      const params = new URLSearchParams({ action:'test' });
+      log('   ' + APPS_SCRIPT_URL + '?' + params.toString());
     });
 }
 
