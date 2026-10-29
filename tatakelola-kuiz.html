@@ -675,37 +675,37 @@
   1️⃣ Pergi ke <a href="https://sheets.google.com" target="_blank" style="color:#0f9d58;font-weight:600;">sheets.google.com</a> → buat spreadsheet baru → namakan "Kuiz Tatakelola KKJ"<br>
   2️⃣ Dalam spreadsheet, klik menu <strong>Extensions → Apps Script</strong><br>
   3️⃣ Padam semua kod sedia ada, kemudian tampal kod di bawah:<br>
-  <textarea readonly rows="14" style="width:100%;margin-top:10px;padding:10px;font-family:monospace;font-size:12px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;color:#1e293b;resize:vertical;"
-  id="apps-script-code">function doPost(e) {
-  try {
-    var body = JSON.parse(e.postData.contents);
-    if (body.action === 'tambahJawapan') {
+  <textarea readonly rows="22" style="width:100%;margin-top:10px;padding:10px;font-family:monospace;font-size:12px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;color:#1e293b;resize:vertical;"
+  id="apps-script-code">function doGet(e) {
+  var action = e.parameter.action;
+
+  if (action === 'test') {
+    return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);
+  }
+
+  if (action === 'tambahJawapan') {
+    try {
       var ss = SpreadsheetApp.getActiveSpreadsheet();
       var sh = ss.getSheetByName('Jawapan') || ss.insertSheet('Jawapan');
       if (sh.getLastRow() === 0) {
         sh.appendRow(['staffId','nama','masa','skor','selesai']);
       }
-      var d = body.data;
-      sh.appendRow([d.staffId, d.namastaf, d.masa, d.skor, d.selesai ? 'Ya' : 'Tidak']);
+      sh.appendRow([e.parameter.staffId, e.parameter.namastaf, e.parameter.masa, Number(e.parameter.skor), 'Ya']);
       return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);
+    } catch(err) {
+      return ContentService.createTextOutput(JSON.stringify({ok:false,error:err.message})).setMimeType(ContentService.MimeType.JSON);
     }
-  } catch(err) {
-    return ContentService.createTextOutput(JSON.stringify({ok:false,error:err.message})).setMimeType(ContentService.MimeType.JSON);
   }
-}
-function doGet(e) {
-  var action = e.parameter.action;
-  if (action === 'test') {
-    return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);
-  }
+
   if (action === 'ambilJawapan') {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var sh = ss.getSheetByName('Jawapan');
     if (!sh || sh.getLastRow() <= 1) return ContentService.createTextOutput(JSON.stringify([])).setMimeType(ContentService.MimeType.JSON);
     var rows = sh.getRange(2, 1, sh.getLastRow()-1, 5).getValues();
-    var result = rows.map(function(r){ return {staffId:r[0],namastaf:r[1],masa:r[2],skor:r[3],selesai:true}; });
+    var result = rows.map(function(r){ return {staffId:String(r[0]),namastaf:String(r[1]),masa:String(r[2]),skor:Number(r[3]),selesai:true}; });
     return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
   }
+
   return ContentService.createTextOutput(JSON.stringify({ok:false})).setMimeType(ContentService.MimeType.JSON);
 }</textarea>
   4️⃣ Klik <strong>Deploy → New deployment → Web app</strong> → set <em>Execute as: Me</em>, <em>Who has access: Anyone</em> → klik <strong>Deploy</strong><br>
@@ -992,12 +992,21 @@ function testGSUrl() {
 // GOOGLE SHEETS — HANTAR JAWAPAN
 // =====================================================================
 function hantarKeSheets(rekod) {
-  if (!APPS_SCRIPT_URL) return Promise.resolve(); // jika URL belum diset, skip
-  return fetch(APPS_SCRIPT_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain' }, // text/plain elak CORS preflight
-    body: JSON.stringify({ action: 'tambahJawapan', data: rekod })
-  }).catch(() => {}); // senyap jika gagal — data masih disimpan dalam localStorage
+  if (!APPS_SCRIPT_URL) return Promise.resolve();
+  // Guna no-cors image trick — paling reliable untuk Apps Script, elak semua isu CORS/redirect
+  return new Promise(function(resolve) {
+    const params = new URLSearchParams({
+      action:   'tambahJawapan',
+      staffId:  rekod.staffId,
+      namastaf: rekod.namastaf,
+      masa:     rekod.masa,
+      skor:     rekod.skor
+    });
+    const img = new Image();
+    img.onload  = function() { resolve(); };
+    img.onerror = function() { resolve(); }; // resolve walaupun error — data dah sampai
+    img.src = APPS_SCRIPT_URL + '?' + params.toString();
+  });
 }
 
 // =====================================================================
